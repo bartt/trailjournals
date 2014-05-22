@@ -22,11 +22,11 @@ class TrailJournals < Sinatra::Base
           feed.xpath('/rss/channel/item[contains(.,"Pacific")]').each do |post|
             item {
               title post.xpath('./title').text
-              pudDate DateTime.parse(post.xpath('./pubDate').text).strftime('%a, %d %b %Y %H:%M:%S %Z')
+              pubDate DateTime.parse(post.xpath('./pubDate').text).strftime('%a, %d %b %Y %H:%M:%S %Z')
               print_link = "http://www.trailjournals.com/journal_print.cfm?autonumber=#{post.xpath('./link').text.split('=').pop}"
               link print_link
               description post.xpath('./description').text
-              guid  Digest::HMAC.hexdigest(print_link, DIGEST_KEY, Digest::SHA1)
+              guid(Digest::HMAC.hexdigest(print_link, DIGEST_KEY, Digest::SHA1), 'isPermaLink' => 'false')
             }
           end
         end
@@ -49,11 +49,11 @@ class TrailJournals < Sinatra::Base
           feed.xpath('/rss/channel/item').each do |post|
             item {
               title post.xpath('./title').text
-              pudDate DateTime.parse(post.xpath('./pubDate').text).strftime('%a, %d %b %Y %H:%M:%S %Z')
+              pubDate DateTime.parse(post.xpath('./pubDate').text).strftime('%a, %d %b %Y %H:%M:%S %Z')
               print_link = "http://www.trailjournals.com/journal_print.cfm?autonumber=#{post.xpath('./link').text.split('=').pop}"
               link print_link
               description post.xpath('./description').text
-              guid  Digest::HMAC.hexdigest(print_link, DIGEST_KEY, Digest::SHA1)
+              guid(Digest::HMAC.hexdigest(print_link, DIGEST_KEY, Digest::SHA1), 'isPermaLink' => 'false')
             }
           end
         end
