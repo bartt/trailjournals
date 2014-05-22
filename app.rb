@@ -16,7 +16,7 @@ class TrailJournals < Sinatra::Base
       xml.rss('version' => '2.0', 'xmlns:atom' => 'http://www.w3.org/2005/Atom') do
         channel do
           xml['atom'].link('href' => href, 'rel' => 'self', 'type' => 'application/rss+xml')
-          title feed.xpath('/rss/channel/title').text
+          title "#{feed.xpath('/rss/channel/title').text} : Pacific Crest Trail"
           link feed.xpath('/rss/channel/link').text
           description 'Lastest PCT posts on trailjournals.com'
           feed.xpath('/rss/channel/item[contains(.,"Pacific")]').each do |post|
