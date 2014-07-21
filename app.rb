@@ -85,7 +85,7 @@ class TrailJournals < Sinatra::Base
       body.css('table').first.remove
     end
 
-    response = "<html><head><title>#{title}</title></head><body>"
+    response = "<html><head><title>#{title}</title></head><body><h1>#{title}</h1>"
     response += "<p>#{date}</p>" if date
     stats.each_index do |i|
       response += "<p>#{stats[i]} #{stats[i + 1]}<p>" if stats[i] =~ /:/ && stats[i + 1] !~ /:/
