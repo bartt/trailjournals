@@ -77,7 +77,7 @@ class TrailJournals < Sinatra::Base
 
     if body
       # Remove the image wrapped in a table
-      body.first_element_child.remove
+      body.first_element_child.remove if img_href
 
       signature = body.css('table').text.strip
 
