@@ -71,7 +71,6 @@ class TrailJournals < Sinatra::Base
     title = entry.css('title').first.text.gsub(/^TrailJournals.com\W+/, '')
     date = entry.css('table table tr').first.text.strip rescue nil
     stats = entry.css('table table tr:nth-child(2)').first.text.gsub(/^\W+/, '').strip.split("\r\n") rescue []
-
     img_href = entry.css('table img').first.attr('src') rescue nil
     body = entry.css('table blockquote').first
 
