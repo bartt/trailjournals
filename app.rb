@@ -85,10 +85,12 @@ class TrailJournals < Sinatra::Base
     end
 
     response = "<html><head><title>#{title}</title></head><body><h1>#{title}</h1>"
-    response += "<p>#{date}</p>" if date
+    response += "<p><em>#{date}</em></p>" if date
+    response += '<table>'
     stats.each_index do |i|
-      response += "<p>#{stats[i]} #{stats[i + 1]}<p>" if stats[i] =~ /:/ && stats[i + 1] !~ /:/
+      response += "<tr><th>#{stats[i]}</th><td>#{stats[i + 1]}</td></tr>" if stats[i] =~ /:/ && stats[i + 1] !~ /:/
     end
+    response += '</table>'
     response += "<p>""<img src='#{img_href}'/></p>" if img_href
     response += "#{body.inner_html}<p>#{signature}</body></html>" if body
     erb response
