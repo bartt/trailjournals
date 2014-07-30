@@ -84,15 +84,25 @@ class TrailJournals < Sinatra::Base
       body.css('table').first.remove
     end
 
-    response = "<html><head><title>#{title}</title></head><body><h1>#{title}</h1>"
+    styles = '
+      .stat.heading {
+        text-align: left;
+      }
+      .signature {
+        font-style: italic;
+        color: grey;
+      }
+    '
+
+    response = "<html><head><title>#{title}</title><style type='text/css'>#{styles}</style></head><body><h1>#{title}</h1>"
     response += "<p><em>#{date}</em></p>" if date
     response += '<table>'
     stats.each_index do |i|
-      response += "<tr><th>#{stats[i]}</th><td>#{stats[i + 1]}</td></tr>" if stats[i] =~ /:/ && stats[i + 1] !~ /:/
+      response += "<tr><th class='stat heading'>#{stats[i]}</th><td>#{stats[i + 1]}</td></tr>" if stats[i] =~ /:/ && stats[i + 1] !~ /:/
     end
     response += '</table>'
     response += "<p>""<img src='#{img_href}'/></p>" if img_href
-    response += "#{body.inner_html}<p>#{signature}</body></html>" if body
+    response += "#{body.inner_html}<p class='signature'>#{signature}</body></html>" if body
     erb response
   end
 end
