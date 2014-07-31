@@ -99,7 +99,7 @@ class TrailJournals < Sinatra::Base
     end
     response += '</table>'
     response += "<p>""<img src='#{img_href}'/></p>" if img_href
-    response += "#{body.inner_html}<p class='signature'><em>#{signature}</em></p></body></html>" if body
+    response += "<p></p>#{body.inner_html}<p class='signature'><em>#{signature}</em></p></body></html>" if body
     erb response
   end
 end
