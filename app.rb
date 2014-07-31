@@ -85,9 +85,6 @@ class TrailJournals < Sinatra::Base
     end
 
     styles = '
-      .stat.heading {
-        text-align: left;
-      }
       .signature {
         font-style: italic;
         color: grey;
@@ -98,11 +95,11 @@ class TrailJournals < Sinatra::Base
     response += "<p><em>#{date}</em></p>" if date
     response += '<table>'
     stats.each_index do |i|
-      response += "<tr><th class='stat heading'>#{stats[i]}</th><td>#{stats[i + 1]}</td></tr>" if stats[i] =~ /:/ && stats[i + 1] !~ /:/
+      response += "<tr><th align='left'>#{stats[i]}</th><td>#{stats[i + 1]}</td></tr>" if stats[i] =~ /:/ && stats[i + 1] !~ /:/
     end
     response += '</table>'
     response += "<p>""<img src='#{img_href}'/></p>" if img_href
-    response += "#{body.inner_html}<p class='signature'>#{signature}</body></html>" if body
+    response += "#{body.inner_html}<p class='signature'><em>#{signature}</em></p></body></html>" if body
     erb response
   end
 end
