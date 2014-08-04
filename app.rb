@@ -38,8 +38,9 @@ class TrailJournals < Sinatra::Base
   get '/hiker', :provides => %w(rss atom xml) do
 
     feed = Nokogiri::XML(open(params['url']))
+    hiker_id = params['url'].split('=').pop
     href = "http://#{request.host}:#{request.port}#{request.path}?url=#{params['url']}"
-    entry_href = "http://#{request.host}:#{request.port}/entry?id="
+    entry_href = "http://#{request.host}:#{request.port}/entry?id=%d&hiker_id=#{hiker_id}"
 
     nokogiri do |xml|
       xml.rss('version' => '2.0', 'xmlns:atom' => 'http://www.w3.org/2005/Atom') do
@@ -52,7 +53,7 @@ class TrailJournals < Sinatra::Base
             item {
               title post.xpath('./title').text
               pubDate DateTime.parse(post.xpath('./pubDate').text).strftime('%a, %d %b %Y %H:%M:%S %z')
-              print_link = entry_href + post.xpath('./link').text.split('=').pop
+              print_link = entry_href % [post.xpath('./link').text.split('=').pop]
               link print_link
               description post.xpath('./description').text
               guid(Digest::HMAC.hexdigest(print_link, DIGEST_KEY, Digest::SHA1), 'isPermaLink' => 'false')
@@ -65,6 +66,7 @@ class TrailJournals < Sinatra::Base
 
   get '/entry' do
     href = "http://www.trailjournals.com/journal_print.cfm?autonumber=#{params['id']}"
+    hiker_id = params['hiker_id']
 
     entry = Nokogiri::HTML(open(href))
 
@@ -99,7 +101,7 @@ class TrailJournals < Sinatra::Base
     end
     response += '</table>'
     response += "<p>""<img src='#{img_href}'/></p>" if img_href
-    response += "<p></p>#{body.inner_html}<p class='signature'><em>#{signature}</em></p></body></html>" if body
+    response += "<p></p>#{body.inner_html}<p class='signature'><em><a href='http://www.trailjournals.com/about.cfm?trailname=#{hiker_id}'>#{signature}</a></em></p></body></html>" if body
     erb response
   end
 end
