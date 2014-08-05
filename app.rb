@@ -19,7 +19,7 @@ class TrailJournals < Sinatra::Base
           xml['atom'].link('href' => href, 'rel' => 'self', 'type' => 'application/rss+xml')
           title "#{feed.xpath('/rss/channel/title').text} : Pacific Crest Trail"
           link feed.xpath('/rss/channel/link').text
-          description 'Lastest PCT posts on trailjournals.com'
+          description 'Latest PCT posts on trailjournals.com'
           feed.xpath('/rss/channel/item[contains(.,"Pacific")]').each do |post|
             item {
               title post.xpath('./title').text
@@ -100,8 +100,13 @@ class TrailJournals < Sinatra::Base
       response += "<tr><th align='left'>#{stats[i]}</th><td>#{stats[i + 1]}</td></tr>" if stats[i] =~ /:/ && stats[i + 1] !~ /:/
     end
     response += '</table>'
-    response += "<p>""<img src='#{img_href}'/></p>" if img_href
-    response += "<p></p>#{body.inner_html}<p class='signature'><em><a href='http://www.trailjournals.com/about.cfm?trailname=#{hiker_id}'>#{signature}</a></em></p></body></html>" if body
+    response += "<p><img src='#{img_href}'/></p>" if img_href
+    response += "<p></p>#{body.inner_html}" if body
+    response += "<p class='signature'><em>"
+    response += "<a href='http://www.trailjournals.com/about.cfm?trailname=#{hiker_id}'>" if hiker_id
+    response += "#{signature}" if signature
+    response += '</a>' if hiker_id
+    response += '</em></p></body></html>'
     erb response
   end
 end
