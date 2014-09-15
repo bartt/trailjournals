@@ -49,7 +49,7 @@ class TrailJournals < Sinatra::Base
           xml['atom'].link('href' => href, 'rel' => 'self', 'type' => 'application/rss+xml')
           title feed.xpath('/rss/channel/title').text
           link feed.xpath('/rss/channel/link').text
-          description 'Lastest PCT posts on trailjournals.com'
+          description feed.xpath('/rss/channel/description').text
           feed.xpath('/rss/channel/item').each do |post|
             item {
               title post.xpath('./title').text
