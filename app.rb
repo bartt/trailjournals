@@ -24,10 +24,11 @@ class TrailJournals < Sinatra::Base
             item {
               title post.xpath('./title').text
               pubDate DateTime.parse(post.xpath('./pubDate').text).strftime('%a, %d %b %Y %H:%M:%S %z')
-              print_link = entry_href + post.xpath('./link').text.split('=').pop
+              orig_link = post.xpath('./link')
+              print_link = entry_href + orig_link.text.split('=').pop
               link print_link
               description post.xpath('./description').text
-              guid(Digest::HMAC.hexdigest(print_link, DIGEST_KEY, Digest::SHA1), 'isPermaLink' => 'false')
+              guid(Digest::HMAC.hexdigest(orig_link, DIGEST_KEY, Digest::SHA1), 'isPermaLink' => 'false')
             }
           end
         end
@@ -53,10 +54,11 @@ class TrailJournals < Sinatra::Base
             item {
               title post.xpath('./title').text
               pubDate DateTime.parse(post.xpath('./pubDate').text).strftime('%a, %d %b %Y %H:%M:%S %z')
-              print_link = entry_href % [post.xpath('./link').text.split('=').pop]
+              orig_link = post.xpath('./link').text
+              print_link = entry_href % [orig_link.split('=').pop]
               link print_link
               description post.xpath('./description').text
-              guid(Digest::HMAC.hexdigest(print_link, DIGEST_KEY, Digest::SHA1), 'isPermaLink' => 'false')
+              guid(Digest::HMAC.hexdigest(orig_link, DIGEST_KEY, Digest::SHA1), 'isPermaLink' => 'false')
             }
           end
         end
