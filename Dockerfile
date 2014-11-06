@@ -8,8 +8,6 @@ RUN cd / && \
 VOLUME /trailjournals
 WORKDIR /trailjournals
 
+EXPOSE 9292
 
-ENV TRAILJOURNALS_PORT 9292
-EXPOSE $BOOKCASTER_PORT
-
-CMD ["rackup", "--env", "production", "--port", $BOOKCASTER_PORT]
+CMD ["rackup", "--env", "production"]
