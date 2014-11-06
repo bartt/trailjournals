@@ -7,6 +7,10 @@ require 'time'
 DIGEST_KEY = 'super secret'
 
 class TrailJournals < Sinatra::Base
+  configure do
+    enable :logging
+  end
+
   get '/pct', :provides => %w(rss atom xml) do
 
     feed = Nokogiri::XML(open('http://www.trailjournals.com/rss/index.cfm'))
@@ -112,4 +116,3 @@ class TrailJournals < Sinatra::Base
     erb response
   end
 end
-
