@@ -14,8 +14,8 @@ class TrailJournals < Sinatra::Base
   get '/pct', :provides => %w(rss atom xml) do
 
     feed = Nokogiri::XML(open('http://www.trailjournals.com/rss/index.cfm'))
-    href = "http://#{request.host}:#{request.port}#{request.path}"
-    entry_href = "http://#{request.host}:#{request.port}/entry?id="
+    href = "#{request.scheme}//#{request.host}:#{request.port}#{request.path}"
+    entry_href = "#{request.scheme}://#{request.host}:#{request.port}/entry?id="
 
     nokogiri do |xml|
       xml.rss('version' => '2.0', 'xmlns:atom' => 'http://www.w3.org/2005/Atom') do
@@ -44,8 +44,8 @@ class TrailJournals < Sinatra::Base
 
     feed = Nokogiri::XML(open(params['url']))
     hiker_id = params['url'].split('=').pop
-    href = "http://#{request.host}:#{request.port}#{request.path}?url=#{params['url']}"
-    entry_href = "http://#{request.host}:#{request.port}/entry?id=%d&hiker_id=#{hiker_id}"
+    href = "#{request.scheme}://#{request.host}:#{request.port}#{request.path}?url=#{params['url']}"
+    entry_href = "#{request.scheme}://#{request.host}:#{request.port}/entry?id=%d&hiker_id=#{hiker_id}"
 
     nokogiri do |xml|
       xml.rss('version' => '2.0', 'xmlns:atom' => 'http://www.w3.org/2005/Atom') do
