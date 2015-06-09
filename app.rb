@@ -99,15 +99,15 @@ class TrailJournals < Sinatra::Base
       }
     '
 
-    response = "<html><head><title>#{title}</title><style type='text/css'>#{styles}</style></head><body><article><header><h1>#{title}</h1>"
-    response += "<p><em>#{date}</em></p>" if date
+    response = "<html><head><title>#{title}</title><style type='text/css'>#{styles}</style></head><body><article class='hentry'><header><h1 class='entry-title'>#{title}</h1>"
+    response += "<p class='published' datetime='#{Date.parse(date)}'><em>#{date}</em></p>" if date
     response += '<table>'
     stats.each_index do |i|
       response += "<tr><th align='left'>#{stats[i]}</th><td>#{stats[i + 1]}</td></tr>" if stats[i] =~ /:/ && stats[i + 1] !~ /:/
     end
     response += '</table></header>'
-    response += "<section class='image'><p><img src='#{img_href}'/></p></section>" if img_href
-    response += "<section class='entry'><p></p>#{body.inner_html}</section>" if body
+    response += "<section class='image entry-content-asset'><p><img src='#{img_href}'/></p></section>" if img_href
+    response += "<section class='entry-content'><p></p>#{body.inner_html}</section>" if body
     response += "<footer><p class='signature'><em>"
     response += "<a href='http://www.trailjournals.com/about.cfm?trailname=#{hiker_id}'>" if hiker_id
     response += "#{signature}" if signature
