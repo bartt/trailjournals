@@ -32,7 +32,7 @@ class TrailJournals < Sinatra::Base
               print_link = entry_href + orig_link.text.split('=').pop
               link print_link
               description post.xpath('./description').text
-              guid(Digest::HMAC.hexdigest(orig_link, DIGEST_KEY, Digest::SHA1), 'isPermaLink' => 'false')
+              guid(Digest::HMAC.hexdigest(orig_link.to_s, DIGEST_KEY, Digest::SHA1), 'isPermaLink' => 'false')
             }
           end
         end
