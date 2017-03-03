@@ -80,19 +80,23 @@ class TrailJournals < Sinatra::Base
     date = entry.css('table table tr').first.text.strip rescue nil
     stats = entry.css('table table tr:nth-child(2)').first.text.gsub(/^\W+/, '').strip.split("\r\n") rescue []
     img_href = entry.css('table img').first.attr('src') rescue nil
-    body = entry.css('table blockquote').first
+    blockquote = entry.css('table blockquote').first
+    signature = blockquote.css('table').text.strip
+    body = ''
 
-    if body
-      # Remove the image wrapped in a table
-      body.first_element_child.remove if img_href
-
-      signature = body.css('table').text.strip
-
-      # Remove signature wrapped in a table
-      body.css('table').first.remove
+    if blockquote
+      blockquote.children.each do |node|
+        if ['text', 'p'].include?(node.name)
+          text = node.text.strip
+          body += "<p>#{text}</p>" if text.length > 0
+        end
+      end
     end
 
     styles = '
+      body {
+        font-family: sans-serif;
+      }
       .signature {
         font-style: italic;
         color: grey;
@@ -107,7 +111,7 @@ class TrailJournals < Sinatra::Base
     end
     response += '</table></header>'
     response += "<section class='image entry-content-asset'><p><img src='#{img_href}'/></p></section>" if img_href
-    response += "<section class='entry-content'><p></p>#{body.inner_html}</section>" if body
+    response += "<section class='entry-content'>#{body}</section>" if body
     response += "<footer><p class='signature'><em>"
     response += "<a href='http://www.trailjournals.com/about.cfm?trailname=#{hiker_id}'>" if hiker_id
     response += "#{signature}" if signature
