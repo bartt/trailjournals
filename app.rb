@@ -96,6 +96,11 @@ class TrailJournals < Sinatra::Base
     styles = '
       body {
         font-family: sans-serif;
+        display: flex;
+        justify-content: center;
+      }
+      article {
+        max-width: 50em;
       }
       .signature {
         font-style: italic;
