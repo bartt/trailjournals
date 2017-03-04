@@ -95,12 +95,20 @@ class TrailJournals < Sinatra::Base
 
     styles = '
       body {
-        font-family: sans-serif;
+        font-family: "Verdana";
+        font-size: 15pt;
         display: flex;
         justify-content: center;
       }
       article {
-        max-width: 50em;
+        max-width: 700px;
+      }
+      p {
+        line-height: 27pt;
+      }
+      .entry-content-asset {
+        float: left;
+        margin-right: 25px;
       }
       .signature {
         font-style: italic;
