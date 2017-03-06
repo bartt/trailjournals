@@ -42,9 +42,10 @@ class TrailJournals < Sinatra::Base
 
   get '/hiker', :provides => %w(rss atom xml) do
 
-    feed = Nokogiri::XML(open(params['url']))
-    hiker_id = params['url'].split('=').pop
-    href = "#{request.scheme}://#{request.host}:#{request.port}#{request.path}?url=#{params['url']}"
+    url = params['id'] ? "http://www.trailjournals.com/rss/index.cfm?jid=#{params['id']}" : params['url']
+    feed = Nokogiri::XML(open(url))
+    hiker_id = url.split('=').pop
+    href = "#{request.scheme}://#{request.host}:#{request.port}#{request.path}?id=#{hiker_id}"
     entry_href = "#{request.scheme}://#{request.host}:#{request.port}/entry?id=%d&hiker_id=#{hiker_id}"
 
     nokogiri do |xml|
