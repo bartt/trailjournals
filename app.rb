@@ -75,6 +75,11 @@ class TrailJournals < Sinatra::Base
     href = "http://www.trailjournals.com/journal_print.cfm?autonumber=#{params['id']}"
     hiker_id = params['hiker_id']
 
+    if hiker_id.nil?
+      html_entry = Nokogiri::HTML(open("http://www.trailjournals.com/entry.cfm?id=#{params['id']}"))
+      hiker_id = html_entry.css('a[href*=rss]').attr('href').value.split('=').pop
+    end
+
     entry = Nokogiri::HTML(open(href))
 
     title = entry.css('title').first.text.gsub(/^TrailJournals.com\W+/, '')
@@ -111,6 +116,9 @@ class TrailJournals < Sinatra::Base
         float: left;
         margin-right: 25px;
       }
+      .icon {
+        vertical-align: middle;
+      }
       .signature {
         font-style: italic;
         color: grey;
@@ -127,6 +135,7 @@ class TrailJournals < Sinatra::Base
     response += "<section class='image entry-content-asset'><p><img src='#{img_href}'/></p></section>" if img_href
     response += "<section class='entry-content'>#{body}</section>" if body
     response += "<footer><p class='signature'><em>"
+    response += "<a href='#{request.scheme}://#{request.host}:#{request.port}/hiker?id=#{hiker_id}'><img class='icon' src='/rss.gif' width=48 hight=17></a> " if hiker_id
     response += "<a href='http://www.trailjournals.com/about.cfm?trailname=#{hiker_id}'>" if hiker_id
     response += "#{signature}" if signature
     response += '</a>' if hiker_id
