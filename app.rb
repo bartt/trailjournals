@@ -139,7 +139,14 @@ class TrailJournals < Sinatra::Base
     response += "<a href='http://www.trailjournals.com/about.cfm?trailname=#{hiker_id}'>" if hiker_id
     response += "#{signature}" if signature
     response += '</a>' if hiker_id
-    response += '</em></p></footer></article></body></html>'
+    response += '</em></p></footer>'
+    response += '<div class="nav"></div></article></body>'
+    response += '<script src="/nav.js"></script></html>'
     erb response
+  end
+
+  get '/proxy' do
+    href = "http://www.trailjournals.com/entry.cfm?id=#{params['id']}"
+    erb open(href).read
   end
 end
