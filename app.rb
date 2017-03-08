@@ -125,7 +125,9 @@ class TrailJournals < Sinatra::Base
       }
     '
 
-    response = "<html><head><title>#{title}</title><style type='text/css'>#{styles}</style></head><body><article class='hentry'><header><h1 class='entry-title'>#{title}</h1>"
+    response = "<html><head><title>#{title}</title><style type='text/css'>#{styles}</style>"
+    response +="<script src='https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js'></script>"
+    response +="</head><body><article class='hentry'><header><h1 class='entry-title'>#{title}</h1>"
     response += "<p class='published' datetime='#{Date.parse(date)}'><em>#{date}</em></p>" if date
     response += '<table>'
     stats.each_index do |i|
