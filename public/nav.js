@@ -1,5 +1,5 @@
 function addNavLinks () {
-  var id = window.location.search.split('=').pop();
+  var id = getQueryParameter('id');
   if (id) {
     getNavIds(id)
       .then(function (links) {
@@ -12,6 +12,16 @@ function addNavLinks () {
       })
       .then(addNavKeyListener);
   }
+}
+
+function getQueryParameter (name) {
+  var queryStr = window.location.search.replace(/^\?/, '');
+  var params = {};
+  queryStr.split('&').forEach(function (paramStr) {
+    var param = paramStr.split('=');
+    params[param[0]] = param[1] || '';
+  });
+  return params[name];
 }
 
 function getNavIds (id) {
