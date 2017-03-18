@@ -123,6 +123,12 @@ class TrailJournals < Sinatra::Base
         font-style: italic;
         color: grey;
       }
+      .nav {
+        margin-bottom: 2em;
+      }
+      .nav a + a {
+        margin-left: .5em;
+      }
     '
 
     response = "<html><head><title>#{title}</title><style type='text/css'>#{styles}</style>"
