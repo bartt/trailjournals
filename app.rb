@@ -1,7 +1,7 @@
-require 'sinatra/base'
+OpenSSL::Digestrequire 'sinatra/base'
 require 'nokogiri'
 require 'open-uri'
-require 'digest/hmac'
+require 'openssl'
 require 'time'
 
 DIGEST_KEY = 'super secret'
@@ -32,7 +32,7 @@ class TrailJournals < Sinatra::Base
               print_link = entry_href + orig_link.text.split('=').pop
               link print_link
               description post.xpath('./description').text
-              guid(Digest::HMAC.hexdigest(orig_link.to_s, DIGEST_KEY, Digest::SHA1), 'isPermaLink' => 'false')
+              guid(OpenSSL::Digest.hexdigest(OpenSSL::Digest.new('sha1'), DIGEST_KEY, orig_link.to_s), 'isPermaLink' => 'false')
             }
           end
         end
@@ -63,7 +63,7 @@ class TrailJournals < Sinatra::Base
               print_link = entry_href % [orig_link.split('=').pop]
               link print_link
               description post.xpath('./description').text
-              guid(Digest::HMAC.hexdigest(orig_link, DIGEST_KEY, Digest::SHA1), 'isPermaLink' => 'false')
+              guid(OpenSSL::Digest.hexdigest(OpenSSL::Digest.new('sha1'), DIGEST_KEY, orig_link), 'isPermaLink' => 'false')
             }
           end
         end
