@@ -1,4 +1,4 @@
-OpenSSL::Digestrequire 'sinatra/base'
+require 'sinatra/base'
 require 'nokogiri'
 require 'open-uri'
 require 'openssl'
