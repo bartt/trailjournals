@@ -32,7 +32,7 @@ class TrailJournals < Sinatra::Base
               print_link = entry_href + orig_link.text.split('=').pop
               link print_link
               description post.xpath('./description').text
-              guid(OpenSSL::Digest.hexdigest(OpenSSL::Digest.new('sha1'), DIGEST_KEY, orig_link.to_s), 'isPermaLink' => 'false')
+              guid(OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), DIGEST_KEY, orig_link.to_s), 'isPermaLink' => 'false')
             }
           end
         end
@@ -63,7 +63,7 @@ class TrailJournals < Sinatra::Base
               print_link = entry_href % [orig_link.split('=').pop]
               link print_link
               description post.xpath('./description').text
-              guid(OpenSSL::Digest.hexdigest(OpenSSL::Digest.new('sha1'), DIGEST_KEY, orig_link), 'isPermaLink' => 'false')
+              guid(OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), DIGEST_KEY, orig_link), 'isPermaLink' => 'false')
             }
           end
         end
