@@ -87,7 +87,7 @@ class TrailJournals < Sinatra::Base
     stats = entry.css('table table tr:nth-child(2)').first.text.gsub(/^\W+/, '').strip.split("\r\n") rescue []
     img_href = entry.css('table img').first.attr('src') rescue nil
     blockquote = entry.css('table blockquote').first
-    signature = blockquote.css('table').text.strip
+    signature = blockquote.css('table td[align]').text.strip
     body = ''
 
     if blockquote
