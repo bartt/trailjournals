@@ -1,16 +1,20 @@
 class Trailjournals {
-  static addNavLinks () {
-    var id = Trailjournals.getQueryParameter('id');
-    var hiker_id = Trailjournals.getQueryParameter('hiker_id');
-    if (id) {
-      Trailjournals.getNavIds(id)
+  constructor (id, hiker_id) {
+    this.id = id;
+
+    this.hiker_id = hiker_id;
+  }
+
+  addNavLinks () {
+    if (this.id) {
+      this.getNavIds()
         .then((links) => {
-          var nav = document.querySelector('.nav');
-          var html = '';
+          const nav = document.querySelector('.nav');
+          let html = '';
           links.forEach((link) => {
             html += '<a href="/entry?id=' + link.id;
-            if (hiker_id) {
-              html += '&hiker_id=' + hiker_id;
+            if (this.hiker_id) {
+              html += '&hiker_id=' + this.hiker_id;
             }
             html += '">' + link.text + '</a> ';
           });
@@ -20,25 +24,15 @@ class Trailjournals {
     }
   }
 
-  static getQueryParameter (name) {
-    var queryStr = window.location.search.replace(/^\?/, '');
-    var params = {};
-    queryStr.split('&').forEach((paramStr) => {
-      var param = paramStr.split('=');
-      params[param[0]] = param[1] || '';
-    });
-    return params[name];
-  }
-
-  static getNavIds (id) {
-    return fetch(new Request('/proxy?id=' + id))
+  getNavIds () {
+    return fetch(new Request('/proxy?id=' + this.id))
       .then((response) => {
         return response.text();
       })
       .then((html) => {
-        var el = document.createElement('div');
+        const el = document.createElement('div');
         el.innerHTML = html;
-        var ls = el.querySelectorAll('.entry-nav-nexprev a');
+        let ls = el.querySelectorAll('.entry-nav-nexprev a');
         // Navigation links are repeated below the post. Only need then once.
         ls = Array.prototype.slice.call(ls, 0, ls.length / 2);
         return ls.map((l) => {
@@ -51,7 +45,7 @@ class Trailjournals {
 
   static addNavKeyListener () {
     document.addEventListener('keydown', (event) => {
-      var navId;
+      let navId;
       switch (event.keyCode) {
         case 70 /* f */:
           navId = 'first';
@@ -68,13 +62,26 @@ class Trailjournals {
         default:
       }
       if (navId) {
-        var navLink = document.querySelector('a#' + navId);
+        const navLink = document.querySelector('a#' + navId);
         if (navLink) {
           navLink.click();
         }
       }
     });
   }
+
+  static getQueryParameter (name) {
+    const queryStr = window.location.search.replace(/^\?/, '');
+    const params = {};
+    queryStr.split('&').forEach((paramStr) => {
+      const param = paramStr.split('=');
+      params[param[0]] = param[1] || '';
+    });
+    return params[name];
+  }
 }
 
-Trailjournals.addNavLinks();
+const trailjournals = new Trailjournals(
+  Trailjournals.getQueryParameter('id'),
+  Trailjournals.getQueryParameter('hiker_id'));
+trailjournals.addNavLinks();
