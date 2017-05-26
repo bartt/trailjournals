@@ -1,8 +1,45 @@
 class Trailjournals {
   constructor (id, hiker_id) {
     this.id = id;
-
     this.hiker_id = hiker_id;
+    this.activateTheme(Trailjournals.getActiveTheme());
+    this.addThemeListener();
+    this.addNavLinks();
+  }
+
+  activateTheme (theme) {
+    if (Trailjournals.THEMES.find((el) => {
+        return el == theme;})) {
+      this.theme = theme;
+    } else {
+      this.theme = Trailjournals.THEMES[0];
+    }
+    document.cookie = 'theme=' + this.theme; + '; path=/ ;max-age=' + Trailjournals.YEAR;
+    document.querySelector('.theme .light').classList.toggle('selected', this.theme == 'light');
+    document.querySelector('.theme .dark').classList.toggle('selected', this.theme == 'dark');
+    Trailjournals.THEMES.forEach((theme) => {
+      document.body.classList.remove(theme);
+    });
+    document.body.classList.add(this.theme);
+  }
+
+  addThemeListener () {
+    document.querySelector('.theme').addEventListener('click', (e) => {
+      this.handleThemeClick(e);
+    });
+  }
+
+  handleThemeClick (e) {
+    if (!e.target.classList.contains(this.theme)) {
+      let theme;
+      e.target.classList.forEach((c) => {
+        if (!!Trailjournals.THEMES.find((t) => {
+            return t == c;})) {
+          theme = c;
+        }
+      });
+      this.activateTheme(theme);
+    }
   }
 
   addNavLinks () {
@@ -70,6 +107,16 @@ class Trailjournals {
     });
   }
 
+  static getActiveTheme () {
+    const cookieStr = document.cookie;
+    const cookies = {};
+    cookieStr.split(';').forEach((pair) => {
+      const cookie = pair.split('=');
+      cookies[cookie[0]] = cookie[1];
+    });
+    return cookies['theme'];
+  }
+
   static getQueryParameter (name) {
     const queryStr = window.location.search.replace(/^\?/, '');
     const params = {};
@@ -81,7 +128,9 @@ class Trailjournals {
   }
 }
 
-const trailjournals = new Trailjournals(
+Trailjournals.YEAR = 60 * 60 * 24 * 365;
+Trailjournals.THEMES = ['light', 'dark'];
+
+new Trailjournals(
   Trailjournals.getQueryParameter('id'),
   Trailjournals.getQueryParameter('hiker_id'));
-trailjournals.addNavLinks();

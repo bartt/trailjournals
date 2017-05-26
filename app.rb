@@ -107,6 +107,17 @@ class TrailJournals < Sinatra::Base
         display: flex;
         justify-content: center;
       }
+      body.light {
+        background-color: #f8f7f5;
+        color: #494949;
+      }
+      body.dark {
+        background-color: #494949;
+        color: #f8f7f5;
+      }
+      body.dark a {
+        color: #798def;
+      }
       article {
         max-width: 700px;
       }
@@ -117,12 +128,56 @@ class TrailJournals < Sinatra::Base
         float: left;
         margin-right: 25px;
       }
+      .published {
+        display: flex;
+      }
+      .published em {
+        flex-grow: 1;
+      }
+      .theme {
+        align-self: flex-end;
+        flex-grow: 0;
+      }
+      .theme > span {
+        display: inline-block;
+        height: 1em;
+        width: 1em;
+        border: 1px solid #999999;
+        margin: 3px 0 5px 1em;
+        border-radius: 15px;
+        cursor: pointer;
+      }
+      .theme .selected {
+        cursor: auto;
+      }
+      .theme .light {
+        background-color: #f8f7f5;
+      }
+      .theme .dark {
+        background-color: #494949;
+      }
+      .light.selected {
+        box-shadow: 0px 0px 12px #666;
+      }
+      .dark.selected {
+        box-shadow: 0px 0px 12px #aaa;
+      }
       .icon {
         vertical-align: middle;
       }
       .signature {
         font-style: italic;
         color: grey;
+        display: flex;
+        flex-direction: row;
+      }
+      .signature em {
+        display: flex;
+        align-items: center;
+        width: 100%;
+      }
+      .signature em a:first-child {
+        flex-basis: 70px;
       }
       .nav {
         margin-bottom: 2em;
@@ -132,10 +187,15 @@ class TrailJournals < Sinatra::Base
       }
     '
 
+    theme = request.cookies['theme'] || 'light';
+    light_selected = theme == 'light' ? 'selected' : ''
+    dark_selected = theme == 'dark' ? 'selected' : ''
     response = "<html><head><title>#{title}</title><style type='text/css'>#{styles}</style>"
     response +="<script src='https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js'></script>"
-    response +="</head><body><article class='hentry'><header><h1 class='entry-title'>#{title}</h1>"
-    response += "<p class='published' datetime='#{Date.parse(date)}'><em>#{date}</em></p>" if date
+    response +="</head><body class='#{theme}'><article class='hentry'><header><h1 class='entry-title'>#{title}</h1>"
+    response += "<p class='published' datetime='#{Date.parse(date)}'>"
+    response += "<em>#{date}</em>" if date
+    response += "<span class='theme'><span class='light #{light_selected}'></span><span class='dark #{dark_selected}'></span></span></p>"
     response += '<table>'
     stats.each_index do |i|
       response += "<tr><th align='left'>#{stats[i]}</th><td>#{stats[i + 1]}</td></tr>" if stats[i] =~ /:/ && stats[i + 1] !~ /:/
