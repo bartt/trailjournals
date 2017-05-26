@@ -144,7 +144,7 @@ class TrailJournals < Sinatra::Base
     response += "<section class='image entry-content-asset'><p><img src='http://www.trailjournals.com#{img_href}'/></p></section>" if img_href
     response += "<section class='entry-content'>#{body}</section>" if body
     response += "<footer><p class='signature'><em>"
-    response += "<a href='#{request.scheme}://#{request.host}:#{request.port}/hiker?id=#{hiker_id}'><img class='icon' src='/rss.gif' width=48 hight=17></a> " if hiker_id
+    response += "<a href='#{request.scheme}://#{request.host}:#{request.port}/hiker?id=#{hiker_id}'><img class='icon' src='/rss.svg' width=48 hight=48></a> " if hiker_id
     response += "<a href='http://www.trailjournals.com/journal/about/#{hiker_id}'>" if hiker_id
     response += "#{signature}" if signature
     response += '</a>' if hiker_id
