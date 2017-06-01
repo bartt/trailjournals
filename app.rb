@@ -202,8 +202,8 @@ class TrailJournals < Sinatra::Base
       response += "<tr><th align='left'>#{stats[i]}</th><td>#{stats[i + 1]}</td></tr>" if stats[i] =~ /:/ && stats[i + 1] !~ /:/
     end
     response += '</table></header>'
-    response += "<section class='image entry-content-asset'><p><img src='http://www.trailjournals.com#{img_href}' alt='photo'/></p></section>" if img_href
-    response += "<section class='entry-content'>#{body}</section>" if body
+    response += "<div class='image entry-content-asset'><p><img src='http://www.trailjournals.com#{img_href}' alt='photo'/></p></div>" if img_href
+    response += "<div class='entry-content'>#{body}</div>" if body
     response += "<footer><p class='signature'><em>"
     response += "<a href='#{request.scheme}://#{request.host}:#{request.port}/hiker?id=#{hiker_id}'><img class='icon' src='/rss.svg' alt='rss icon' width=48 height=48></a> " if hiker_id
     response += "<a href='http://www.trailjournals.com/journal/about/#{hiker_id}'>" if hiker_id
