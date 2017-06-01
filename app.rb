@@ -190,10 +190,11 @@ class TrailJournals < Sinatra::Base
     theme = request.cookies['theme'] || 'light';
     light_selected = theme == 'light' ? 'selected' : ''
     dark_selected = theme == 'dark' ? 'selected' : ''
-    response = "<html><head><title>#{title}</title><style type='text/css'>#{styles}</style>"
-    response +="<script src='https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js'></script>"
-    response +="</head><body class='#{theme}'><article class='hentry'><header><h1 class='entry-title'>#{title}</h1>"
-    response += "<p class='published' datetime='#{Date.parse(date)}'>"
+    response = "<!DOCTYPE html>"
+    response += "<html lang='en'><head><title>#{title}</title><style type='text/css'>#{styles}</style>"
+    response += "<script src='https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js'></script>"
+    response += "</head><body class='#{theme}'><article class='hentry'><header><h1 class='entry-title'>#{title}</h1>"
+    response += "<p class='published' data-datetime='#{Date.parse(date)}'>"
     response += "<em>#{date}</em>" if date
     response += "<span class='theme'><span class='light #{light_selected}'></span><span class='dark #{dark_selected}'></span></span></p>"
     response += '<table>'
@@ -201,16 +202,15 @@ class TrailJournals < Sinatra::Base
       response += "<tr><th align='left'>#{stats[i]}</th><td>#{stats[i + 1]}</td></tr>" if stats[i] =~ /:/ && stats[i + 1] !~ /:/
     end
     response += '</table></header>'
-    response += "<section class='image entry-content-asset'><p><img src='http://www.trailjournals.com#{img_href}'/></p></section>" if img_href
+    response += "<section class='image entry-content-asset'><p><img src='http://www.trailjournals.com#{img_href}' alt='photo'/></p></section>" if img_href
     response += "<section class='entry-content'>#{body}</section>" if body
     response += "<footer><p class='signature'><em>"
-    response += "<a href='#{request.scheme}://#{request.host}:#{request.port}/hiker?id=#{hiker_id}'><img class='icon' src='/rss.svg' width=48 hight=48></a> " if hiker_id
+    response += "<a href='#{request.scheme}://#{request.host}:#{request.port}/hiker?id=#{hiker_id}'><img class='icon' src='/rss.svg' alt='rss icon' width=48 height=48></a> " if hiker_id
     response += "<a href='http://www.trailjournals.com/journal/about/#{hiker_id}'>" if hiker_id
     response += "#{signature}" if signature
     response += '</a>' if hiker_id
     response += '</em></p></footer>'
-    response += '<div class="nav"></div></article></body>'
-    response += '<script src="/nav.js"></script></html>'
+    response += '<div class="nav"></div></article><script src="/nav.js"></script></body></html>'
     erb response
   end
 
