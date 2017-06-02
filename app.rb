@@ -124,6 +124,9 @@ class TrailJournals < Sinatra::Base
       p {
         line-height: 27pt;
       }
+      header th {
+        text-align: left;
+      }
       .entry-content-asset {
         float: left;
         margin-right: 25px;
@@ -199,7 +202,7 @@ class TrailJournals < Sinatra::Base
     response += "<span class='theme'><span class='light #{light_selected}'></span><span class='dark #{dark_selected}'></span></span></p>"
     response += '<table>'
     stats.each_index do |i|
-      response += "<tr><th align='left'>#{stats[i]}</th><td>#{stats[i + 1]}</td></tr>" if stats[i] =~ /:/ && stats[i + 1] !~ /:/
+      response += "<tr><th>#{stats[i]}</th><td>#{stats[i + 1]}</td></tr>" if stats[i] =~ /:/ && stats[i + 1] !~ /:/
     end
     response += '</table></header>'
     response += "<div class='image entry-content-asset'><p><img src='http://www.trailjournals.com#{img_href}' alt='photo'/></p></div>" if img_href
