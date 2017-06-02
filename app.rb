@@ -134,8 +134,9 @@ class TrailJournals < Sinatra::Base
       .published {
         display: flex;
       }
-      .published em {
+      .published time {
         flex-grow: 1;
+        font-style: italic;
       }
       .theme {
         align-self: flex-end;
@@ -197,8 +198,8 @@ class TrailJournals < Sinatra::Base
     response += "<html lang='en'><head><title>#{title}</title><style type='text/css'>#{styles}</style>"
     response += "<script src='https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js'></script>"
     response += "</head><body class='#{theme}'><article class='hentry'><header><h1 class='entry-title'>#{title}</h1>"
-    response += "<p class='published' data-datetime='#{Date.parse(date)}'>"
-    response += "<em>#{date}</em>" if date
+    response += "<p class='published'>"
+    response += "<time datetime='#{Date.parse(date)}'>#{date}</time>" if date
     response += "<span class='theme'><span class='light #{light_selected}'></span><span class='dark #{dark_selected}'></span></span></p>"
     response += '<table>'
     stats.each_index do |i|
