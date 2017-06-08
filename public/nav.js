@@ -53,7 +53,7 @@ class Trailjournals {
             if (this.hiker_id) {
               html += '&hiker_id=' + this.hiker_id;
             }
-            html += '">' + link.text + '</a> ';
+            html += '" id="' + link.text.toLowerCase() + '">' + link.text + '</a> ';
           });
           nav.innerHTML = html;
         })

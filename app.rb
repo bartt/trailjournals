@@ -130,6 +130,7 @@ class TrailJournals < Sinatra::Base
       .entry-content-asset {
         float: left;
         margin-right: 25px;
+        margin-top: 1.5em;
       }
       .published {
         display: flex;
@@ -206,7 +207,7 @@ class TrailJournals < Sinatra::Base
       response += "<tr><th>#{stats[i]}</th><td>#{stats[i + 1]}</td></tr>" if stats[i] =~ /:/ && stats[i + 1] !~ /:/
     end
     response += '</table></header>'
-    response += "<div class='image entry-content-asset'><p><img src='http://www.trailjournals.com#{img_href}' alt='photo'/></p></div>" if img_href
+    response += "<img src='http://www.trailjournals.com#{img_href}' alt='photo' class='entry-content-asset'/>" if img_href
     response += "<div class='entry-content'>#{body}</div>" if body
     response += "<footer><p class='signature'><em>"
     response += "<a href='#{request.scheme}://#{request.host}:#{request.port}/hiker?id=#{hiker_id}'><img class='icon' src='/rss.svg' alt='rss icon' width=48 height=48></a> " if hiker_id
