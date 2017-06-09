@@ -223,4 +223,9 @@ class TrailJournals < Sinatra::Base
     href = "http://www.trailjournals.com/entry.cfm?id=#{params['id']}"
     erb open(href).read
   end
+
+  # Prevent 404 errors for the images in proxied trailjournals.com pages.
+  get '/images/*' do
+    200 # HTTP_OK
+  end
 end
