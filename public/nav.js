@@ -68,7 +68,9 @@ class Trailjournals {
       })
       .then((html) => {
         const el = document.createElement('div');
-        el.innerHTML = html;
+        html = html.replace(/http:(\w|\d|\/|\.|-)+/g, '').replace(/\/\/www.avantlink.com.*"/g, '"');
+        let container = html.match(/<div class="container">[^]*<\/div>/);
+        el.innerHTML = (container ? container[0] : html);
         let ls = el.querySelectorAll('.entry-nav-nexprev a');
         // Navigation links are repeated below the post. Only need then once.
         ls = Array.prototype.slice.call(ls, 0, ls.length / 2);
