@@ -81,6 +81,7 @@ class TrailJournals < Sinatra::Base
 
 
     title = entry.css('.journal-title').first.text.gsub(/^TrailJournals.com\W+/, '')
+    entry_title = entry.css('.entry-title')
     date = entry.css('.entry-date').first.text.strip rescue nil
     stats = entry.css('.panel-heading .row:nth-child(n+2) span').to_a rescue []
     stats.map! do |stat|
@@ -199,6 +200,7 @@ class TrailJournals < Sinatra::Base
     response += "<html lang='en'><head><title>#{title}</title><style type='text/css'>#{styles}</style>"
     response += "<script src='https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js'></script>"
     response += "</head><body class='#{theme}'><article class='hentry'><header><h1 class='entry-title'>#{title}</h1>"
+    response += "<h2>#{entry_title}</h2>" if entry_title
     response += "<p class='published'>"
     response += "<time datetime='#{Date.parse(date)}'>#{date}</time>" if date
     response += "<span class='theme'><span class='light #{light_selected}'></span><span class='dark #{dark_selected}'></span></span></p>"
