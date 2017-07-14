@@ -143,10 +143,16 @@ class TrailJournals < Sinatra::Base
       .theme {
         cursor: pointer;
         flex-grow: 0;
-        font-size: 200%;
+        transform: rotate(-90deg);
+        width: 42px;
+        height: 42px;
       }
       .icon {
         vertical-align: middle;
+      }
+      .icon.rss {
+        width: 48px;
+        height: 48px;
       }
       .signature {
         font-style: italic;
@@ -180,7 +186,7 @@ class TrailJournals < Sinatra::Base
     response += "<h2>#{entry_title}</h2>" if entry_title
     response += "<p class='published'>"
     response += "<time datetime='#{Date.parse(date)}'>#{date}</time>" if date
-    response += "<span class='theme'>☯</span></p>"
+    response += "<img class='theme icon' src='/ying-yang.svg' alt='background color toggle'></p>"
     response += '<table>'
     stats.each_index do |i|
       response += "<tr><th>#{stats[i]}</th><td>#{stats[i + 1]}</td></tr>" if stats[i] =~ /:/ && stats[i + 1] !~ /:/
@@ -189,7 +195,7 @@ class TrailJournals < Sinatra::Base
     response += "<img src='http://www.trailjournals.com#{img_href}' alt='photo' class='entry-content-asset'/>" if img_href
     response += "<div class='entry-content'>#{body}</div>" if body
     response += "<footer><p class='signature'><em>"
-    response += "<a href='#{request.scheme}://#{request.host}:#{request.port}/hiker?id=#{hiker_id}'><img class='icon' src='/rss.svg' alt='rss icon' width=48 height=48></a> " if hiker_id
+    response += "<a href='#{request.scheme}://#{request.host}:#{request.port}/hiker?id=#{hiker_id}'><img class='icon rss' src='/rss.svg' alt='rss icon'></a> " if hiker_id
     response += "<a href='http://www.trailjournals.com/journal/about/#{hiker_id}'>" if hiker_id
     response += "#{signature}" if signature
     response += '</a>' if hiker_id
