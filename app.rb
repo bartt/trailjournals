@@ -141,32 +141,9 @@ class TrailJournals < Sinatra::Base
         font-style: italic;
       }
       .theme {
-        align-self: flex-end;
-        flex-grow: 0;
-      }
-      .theme > span {
-        display: inline-block;
-        height: 1em;
-        width: 1em;
-        border: 1px solid #999999;
-        margin: 3px 0 5px 1em;
-        border-radius: 15px;
         cursor: pointer;
-      }
-      .theme .selected {
-        cursor: auto;
-      }
-      .theme .light {
-        background-color: #f8f7f5;
-      }
-      .theme .dark {
-        background-color: #494949;
-      }
-      .light.selected {
-        box-shadow: 0px 0px 12px #666;
-      }
-      .dark.selected {
-        box-shadow: 0px 0px 12px #aaa;
+        flex-grow: 0;
+        font-size: 200%;
       }
       .icon {
         vertical-align: middle;
@@ -203,7 +180,7 @@ class TrailJournals < Sinatra::Base
     response += "<h2>#{entry_title}</h2>" if entry_title
     response += "<p class='published'>"
     response += "<time datetime='#{Date.parse(date)}'>#{date}</time>" if date
-    response += "<span class='theme'><span class='light #{light_selected}'></span><span class='dark #{dark_selected}'></span></span></p>"
+    response += "<span class='theme'>☯</span></p>"
     response += '<table>'
     stats.each_index do |i|
       response += "<tr><th>#{stats[i]}</th><td>#{stats[i + 1]}</td></tr>" if stats[i] =~ /:/ && stats[i + 1] !~ /:/

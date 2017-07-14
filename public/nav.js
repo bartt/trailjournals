@@ -14,32 +14,26 @@ class Trailjournals {
     } else {
       this.theme = Trailjournals.THEMES[0];
     }
-    document.cookie = 'theme=' + this.theme + '; max-age=' + Trailjournals.YEAR + '; path=/;';
-    document.querySelector('.theme .light').classList.toggle('selected', this.theme == 'light');
-    document.querySelector('.theme .dark').classList.toggle('selected', this.theme == 'dark');
-    Trailjournals.THEMES.forEach((theme) => {
-      document.body.classList.remove(theme);
-    });
+    document.cookie =
+      'theme=' + this.theme + '; max-age=' + Trailjournals.YEAR + '; path=/;';
+    Trailjournals.THEMES.forEach(
+      (theme) => {
+        document.body.classList.remove(theme);});
     document.body.classList.add(this.theme);
+    this.activeTheme = theme;
   }
 
   addThemeListener () {
-    document.querySelector('.theme').addEventListener('click', (e) => {
-      this.handleThemeClick(e);
-    });
+    document.querySelector('.theme').addEventListener(
+      'click', (e) => {
+        this.handleThemeClick(e);});
   }
 
   handleThemeClick (e) {
-    if (!e.target.classList.contains(this.theme)) {
-      let theme;
-      e.target.classList.forEach((c) => {
-        if (!!Trailjournals.THEMES.find((t) => {
-            return t == c;})) {
-          theme = c;
-        }
-      });
-      this.activateTheme(theme);
-    }
+    const activeTheme = this.theme;
+    const newTheme = Trailjournals.THEMES.find((t) => {
+      return t != activeTheme;});
+    this.activateTheme(newTheme);
   }
 
   addNavLinks () {
@@ -53,7 +47,8 @@ class Trailjournals {
             if (this.hiker_id) {
               html += '&hiker_id=' + this.hiker_id;
             }
-            html += '" id="' + link.text.toLowerCase() + '">' + link.text + '</a> ';
+            html += '" id="' + link.text.toLowerCase() + '">' + link.text +
+              '</a> ';
           });
           nav.innerHTML = html;
         })
@@ -64,11 +59,11 @@ class Trailjournals {
   getNavIds () {
     return fetch(new Request('/proxy?id=' + this.id))
       .then((response) => {
-        return response.text();
-      })
+        return response.text();})
       .then((html) => {
         const el = document.createElement('div');
-        html = html.replace(/http:(\w|\d|\/|\.|-)+/g, '').replace(/\/\/www.avantlink.com.*"/g, '"');
+        html = html.replace(/http:(\w|\d|\/|\.|-)+/g, '')
+          .replace(/\/\/www.avantlink.com.*"/g, '"');
         let container = html.match(/<div class="container">[^]*<\/div>/);
         el.innerHTML = (container ? container[0] : html);
         let ls = el.querySelectorAll('.entry-nav-nexprev a');
@@ -77,7 +72,8 @@ class Trailjournals {
         return ls.map((l) => {
           return {
             text: l.text,
-          id: l.getAttribute('href').split('/').pop()};
+            id: l.getAttribute('href').split('/').pop()
+          };
         });
       });
   }
@@ -131,8 +127,7 @@ class Trailjournals {
 }
 
 Trailjournals.YEAR = 60 * 60 * 24 * 365;
-Trailjournals.THEMES = ['light', 'dark'];
+Trailjournals.THEMES = [ 'light', 'dark' ];
 
-new Trailjournals(
-  Trailjournals.getQueryParameter('id'),
+new Trailjournals(Trailjournals.getQueryParameter('id'),
   Trailjournals.getQueryParameter('hiker_id'));
