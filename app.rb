@@ -174,6 +174,19 @@ class TrailJournals < Sinatra::Base
       .nav a + a {
         margin-left: .5em;
       }
+      .theme svg {
+        width: 100%;
+        height: 100%;
+      }
+      body.light .theme .dark {
+        fill: #494949;
+      }
+      body.dark .theme .dark {
+        fill: #323232;
+      }
+      .theme .light {
+        fill: #f8f7f5;
+      }
     '
 
     theme = request.cookies['theme'] || 'light';
@@ -186,7 +199,7 @@ class TrailJournals < Sinatra::Base
     response += "<h2>#{entry_title}</h2>" if entry_title
     response += "<p class='published'>"
     response += "<time datetime='#{Date.parse(date)}'>#{date}</time>" if date
-    response += "<img class='theme icon' src='/ying-yang.svg' alt='background color toggle'></p>"
+    response += "<span class='theme icon' src='/ying-yang.svg' title='background color toggle'>#{File.read('public/ying-yang.svg')}</span></p>"
     response += '<table>'
     stats.each_index do |i|
       response += "<tr><th>#{stats[i]}</th><td>#{stats[i + 1]}</td></tr>" if stats[i] =~ /:/ && stats[i + 1] !~ /:/
