@@ -129,9 +129,8 @@ class TrailJournals < Sinatra::Base
         text-align: left;
       }
       .entry-content-asset {
-        float: left;
-        margin-right: 25px;
-        margin-top: 1.5em;
+        width: 100%;
+        margin: 1.5em 0 .5em;
       }
       .published {
         display: flex;
