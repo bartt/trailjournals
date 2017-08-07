@@ -88,6 +88,7 @@ class TrailJournals < Sinatra::Base
       stat.text.strip;
     end
     img_href = entry.css('.entry img').first.attr('src') rescue nil
+    avatar_href = entry.css('.journal-thumbnail img').first.attr('src') rescue nil
     blockquote = entry.css('.entry')
     signature = blockquote.css('.journal-signature').text.strip
     body = ''
@@ -132,12 +133,18 @@ class TrailJournals < Sinatra::Base
         width: 100%;
         margin: 1.5em 0 .5em;
       }
-      .published {
+      .published,
+      .stats {
         display: flex;
       }
       .published time {
         flex-grow: 1;
         font-style: italic;
+      }
+      .stats .avatar {
+        height: 100px;
+        width: 100px;
+        margin: .5em 1em 0 0;
       }
       .theme {
         cursor: pointer;
@@ -199,11 +206,15 @@ class TrailJournals < Sinatra::Base
     response += "<p class='published'>"
     response += "<time datetime='#{Date.parse(date)}'>#{date}</time>" if date
     response += "<span class='theme icon' src='/ying-yang.svg' title='background color toggle'>#{File.read('public/ying-yang.svg')}</span></p>"
+    response += "<div class='stats'>"
+    response += "<a href='http://www.trailjournals.com/journal/about/#{hiker_id}'>" if hiker_id && avatar_href
+    response +="<img class='avatar' src='http://www.trailjournals.com#{avatar_href}'>" if avatar_href
+    response += "</a>" if hiker_id && avatar_href
     response += '<table>'
     stats.each_index do |i|
       response += "<tr><th>#{stats[i]}</th><td>#{stats[i + 1]}</td></tr>" if stats[i] =~ /:/ && stats[i + 1] !~ /:/
     end
-    response += '</table></header>'
+    response += '</table></header></stats>'
     response += "<img src='http://www.trailjournals.com#{img_href}' alt='photo' class='entry-content-asset'/>" if img_href
     response += "<div class='entry-content'>#{body}</div>" if body
     response += "<footer><p class='signature'><em>"
