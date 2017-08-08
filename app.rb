@@ -80,7 +80,7 @@ class TrailJournals < Sinatra::Base
     end
 
 
-    title = entry.css('.journal-title').first.text.gsub(/^TrailJournals.com\W+/, '')
+    title = entry.css('.journal-title').first.text.gsub(/(\d{4})/, '\1 ')
     entry_title = entry.css('.entry-title')
     date = entry.css('.entry-date').first.text.strip rescue nil
     stats = entry.css('.panel-heading .row:nth-child(n+2) span').to_a rescue []
