@@ -5,7 +5,7 @@
   <% end %>
   <p class='published'>
     <% if date %>
-      <time datetime="<%= Date.parse(date) %>"><%= date %></time>
+      <time datetime="<%= Date.parse(date) rescue ''%>"><%= date %></time>
     <% end %>
     <span class='theme icon' src='/ying-yang.svg' title='background color toggle'><%= File.read('public/ying-yang.svg') %></span>
   </p>
