@@ -11,6 +11,20 @@ class TrailJournals < Sinatra::Base
     enable :logging
   end
 
+  get '/' do
+    current_year = Date.today.year
+    erb :index, :locals => {
+      :theme => request.cookies['theme'] || 'light',
+      :title => 'Trailjournals',
+      :trails => [
+        {:abbr => 'AT', :path => 'appalachian_trail'},
+        {:abbr => 'CDT', :path => 'continental_divide_trail'},
+        {:abbr => 'PCT', :path => 'pacific_crest_trail'}
+      ],
+      :years => (current_year-4..current_year)
+    }
+  end
+
   get '/pct', :provides => %w(rss atom xml) do
 
     feed = Nokogiri::XML(open('http://www.trailjournals.com/rss/index.cfm'))
@@ -85,7 +99,7 @@ class TrailJournals < Sinatra::Base
     date = entry.css('.entry-date').first.text.strip rescue nil
     stats = entry.css('.panel-heading .row:nth-child(n+2) span').to_a rescue []
     stats.map! do |stat|
-      stat.text.strip;
+      stat.text.strip
     end
     img_href = entry.css('.entry img').first.attr('src') rescue nil
     avatar_href = entry.css('.journal-thumbnail img').first.attr('src') rescue nil
@@ -102,134 +116,24 @@ class TrailJournals < Sinatra::Base
       end
     end
 
-    styles = '
-      body {
-        font-family: "Verdana";
-        font-size: 15pt;
-        display: flex;
-        justify-content: center;
-      }
-      body.light {
-        background-color: #f8f7f5;
-        color: #494949;
-      }
-      body.dark {
-        background-color: #494949;
-        color: #f8f7f5;
-      }
-      body.dark a {
-        color: #798def;
-      }
-      article {
-        max-width: 700px;
-      }
-      p {
-        line-height: 27pt;
-      }
-      header th {
-        text-align: left;
-      }
-      .entry-content-asset {
-        width: 100%;
-        margin: 1.5em 0 .5em;
-      }
-      .published,
-      .stats {
-        display: flex;
-      }
-      .published time {
-        flex-grow: 1;
-        font-style: italic;
-      }
-      .stats .avatar {
-        height: 100px;
-        width: 100px;
-        margin: .5em 1em 0 0;
-      }
-      .theme {
-        cursor: pointer;
-        flex-grow: 0;
-        transform: rotate(-90deg);
-        width: 42px;
-        height: 42px;
-      }
-      .icon {
-        vertical-align: middle;
-      }
-      .icon.rss {
-        width: 48px;
-        height: 48px;
-      }
-      .signature {
-        font-style: italic;
-        color: grey;
-        display: flex;
-        flex-direction: row;
-      }
-      .signature em {
-        display: flex;
-        align-items: center;
-        width: 100%;
-      }
-      .signature em a:first-child {
-        flex-basis: 70px;
-      }
-      .nav {
-        margin-bottom: 2em;
-      }
-      .nav a + a {
-        margin-left: .5em;
-      }
-      .theme svg {
-        width: 100%;
-        height: 100%;
-      }
-      body.light .theme .dark {
-        fill: #494949;
-      }
-      body.dark .theme .dark {
-        fill: #323232;
-      }
-      .theme .light {
-        fill: #f8f7f5;
-      }
-    '
-
-    theme = request.cookies['theme'] || 'light';
-    light_selected = theme == 'light' ? 'selected' : ''
-    dark_selected = theme == 'dark' ? 'selected' : ''
-    response = "<!DOCTYPE html>"
-    response += "<html lang='en'><head><title>#{title}</title><style type='text/css'>#{styles}</style>"
-    response += "<script src='https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js'></script>"
-    response += "</head><body class='#{theme}'><article class='hentry'><header><h1 class='entry-title'>#{title}</h1>"
-    response += "<h2>#{entry_title}</h2>" if entry_title
-    response += "<p class='published'>"
-    response += "<time datetime='#{Date.parse(date)}'>#{date}</time>" if date
-    response += "<span class='theme icon' src='/ying-yang.svg' title='background color toggle'>#{File.read('public/ying-yang.svg')}</span></p>"
-    response += "<div class='stats'>"
-    response += "<a href='http://www.trailjournals.com/journal/about/#{hiker_id}'>" if hiker_id && avatar_href
-    response +="<img class='avatar' src='http://www.trailjournals.com#{avatar_href}'>" if avatar_href
-    response += "</a>" if hiker_id && avatar_href
-    response += '<table>'
-    stats.each_index do |i|
-      response += "<tr><th>#{stats[i]}</th><td>#{stats[i + 1]}</td></tr>" if stats[i] =~ /:/ && stats[i + 1] !~ /:/
-    end
-    response += '</table></header></stats>'
-    response += "<img src='http://www.trailjournals.com#{img_href}' alt='photo' class='entry-content-asset'/>" if img_href
-    response += "<div class='entry-content'>#{body}</div>" if body
-    response += "<footer><p class='signature'><em>"
-    response += "<a href='#{request.scheme}://#{request.host}:#{request.port}/hiker?id=#{hiker_id}'><img class='icon rss' src='/rss.svg' alt='rss icon'></a> " if hiker_id
-    response += "<a href='http://www.trailjournals.com/journal/about/#{hiker_id}'>" if hiker_id
-    response += "#{signature}" if signature
-    response += '</a>' if hiker_id
-    response += '</em></p></footer>'
-    response += '<div class="nav"></div></article><script src="/nav.js"></script></body></html>'
-    erb response
+    erb :entry, :locals => {
+      :theme => request.cookies['theme'] || 'light',
+      :title => title,
+      :entry_title => entry_title,
+      :date => date,
+      :hiker_id => hiker_id,
+      :avatar_href => avatar_href,
+      :stats => stats,
+      :img_href => img_href,
+      :body => body,
+      :signature => signature,
+      :request => request
+    }
   end
 
   get '/proxy' do
     href = "http://www.trailjournals.com/entry.cfm?id=#{params['id']}"
-    erb open(href).read
+    erb open(href).read, :layout => false
   end
 
   # Prevent 404 errors for the images in proxied trailjournals.com pages.

@@ -1,0 +1,55 @@
+<header>
+  <h1 class='entry-title'><%= title %></h1>
+  <% if entry_title %>
+    <h2><%= entry_title %></h2>
+  <% end %>
+  <p class='published'>
+    <% if date %>
+      <time datetime="<%= Date.parse(date) %>"><%= date %></time>
+    <% end %>
+    <span class='theme icon' src='/ying-yang.svg' title='background color toggle'><%= File.read('public/ying-yang.svg') %></span>
+  </p>
+  <div class='stats'>
+    <% if hiker_id && avatar_href %>
+      <a href="http://www.trailjournals.com/journal/about/<%= hiker_id %>">
+    <% end %>
+    <% if avatar_href %>
+      <img class='avatar' src="http://www.trailjournals.com<%= avatar_href %>">
+    <% end %>
+    <% if hiker_id && avatar_href %>
+      </a>
+    <% end %>
+    <table>
+      <% if stats %>
+        <% stats.each_index do |i| %>
+          <% if stats[i] =~ /:/ && stats[i + 1] !~ /:/ %>
+            <tr><th><%= stats[i] %></th><td><%= stats[i + 1] %></td></tr>
+          <% end %>
+        <% end %>
+      <% end %>
+    </table>
+  </stats>
+</header>
+<% if img_href %>
+  <img src="http://www.trailjournals.com<%= img_href %>" alt='photo' class='entry-content-asset'/>
+<% end %>
+<% if body %>
+  <div class='entry-content'><%= body %></div>
+<% end %>
+<footer>
+  <p class='signature'>
+    <em>
+      <% if hiker_id %>
+        <a href="<%= request.scheme %>://<%= request.host %>:<%= request.port %>/hiker?id=<%= hiker_id %>"><img class='icon rss' src='/rss.svg' alt='rss icon'></a>
+        <a href="http://www.trailjournals.com/journal/about/<%= hiker_id %>">
+      <% end %>
+      <% if signature %>
+        <%= signature %>
+      <% end %>
+      <% if hiker_id %>
+        </a>
+      <% end %>
+    </em>
+  </p>
+</footer>
+<div class='nav'></div>

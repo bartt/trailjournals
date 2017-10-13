@@ -1,0 +1,116 @@
+body {
+  font-family: "Verdana";
+  font-size: 15pt;
+  display: flex;
+  justify-content: center;
+}
+body.light {
+  background-color: #f8f7f5;
+  color: #494949;
+}
+body.dark {
+  background-color: #494949;
+  color: #f8f7f5;
+}
+body.dark a {
+  color: #798def;
+}
+article {
+  max-width: 700px;
+}
+p {
+  line-height: 27pt;
+}
+header th {
+  text-align: left;
+}
+.logo {
+  margin: auto;
+  max-width: 66%;
+}
+body.dark .logo svg path {
+  fill: #f8f7f5
+}
+body.light .logo svg path {
+  fill: #494949
+}
+.years {
+  margin-left: 2em;
+  margin-bottom: 2em;
+}
+.entry-content-asset {
+  width: 100%;
+  margin: 1.5em 0 .5em;
+}
+.entry-form {
+  margin-top: 1em;
+}
+.published,
+.stats,
+.entry-form header {
+  display: flex;
+  margin-bottom: 1em;
+}
+.entry-form h2,
+.published time {
+  flex-grow: 1;
+}
+.entry-form h2 {
+  display: inline;
+  margin: 0 2em 0 0;
+}
+.published time {
+  font-style: italic;
+}
+.stats .avatar {
+  height: 100px;
+  width: 100px;
+  margin: .5em 1em 0 0;
+}
+.theme {
+  cursor: pointer;
+  flex-grow: 0;
+  transform: rotate(-90deg);
+  width: 42px;
+  height: 42px;
+}
+.icon {
+  vertical-align: middle;
+}
+.icon.rss {
+  width: 48px;
+  height: 48px;
+}
+.signature {
+  font-style: italic;
+  color: grey;
+  display: flex;
+  flex-direction: row;
+}
+.signature em {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.signature em a:first-child {
+  flex-basis: 70px;
+}
+.nav {
+  margin-bottom: 2em;
+}
+.nav a + a {
+  margin-left: .5em;
+}
+.theme svg {
+  width: 100%;
+  height: 100%;
+}
+body.light .theme .dark {
+  fill: #494949;
+}
+body.dark .theme .dark {
+  fill: #323232;
+}
+.theme .light {
+  fill: #f8f7f5;
+}
