@@ -108,7 +108,7 @@ class Trailjournals {
   static getActiveTheme () {
     const cookieStr = document.cookie;
     const cookies = {};
-    cookieStr.split(';').forEach((pair) => {
+    cookieStr.split(/;\W*/).forEach((pair) => {
       const cookie = pair.split('=');
       cookies[cookie[0]] = cookie[1];
     });
