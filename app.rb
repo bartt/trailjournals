@@ -111,7 +111,12 @@ class TrailJournals < Sinatra::Base
       blockquote.children.each do |node|
         if ['text', 'p', 'h4'].include?(node.name)
           text = node.text.strip
-          body += "<p>#{text}</p>" if text.length > 0
+          body += "<p>#{text}</p>" if text.length > 0 && text !~ /^\W+$/
+          img = node.css('img').first rescue nil
+          if img then
+            img['class'] = 'entry-content-asset'
+            body += img.to_html
+          end
         end
       end
     end

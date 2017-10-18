@@ -42,6 +42,9 @@ body.light .logo svg path {
   width: 100%;
   margin: 1.5em 0 .5em;
 }
+.entry-content .entry-content-asset {
+  margin: 0;
+}
 .entry-form {
   margin-top: 1em;
 }
