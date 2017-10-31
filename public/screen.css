@@ -90,13 +90,16 @@ body.light .logo svg path {
   display: flex;
   flex-direction: row;
 }
-.signature em {
+.signature {
   display: flex;
   align-items: center;
   width: 100%;
 }
-.signature em a:first-child {
+.signature a {
   flex-basis: 70px;
+}
+.signature a:last-child {
+  flex-basis: auto;
 }
 .nav {
   margin-bottom: 2em;

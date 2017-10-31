@@ -38,18 +38,17 @@
 <% end %>
 <footer>
   <p class='signature'>
-    <em>
-      <% if hiker_id %>
-        <a href="<%= request.scheme %>://<%= request.host %>:<%= request.port %>/hiker?id=<%= hiker_id %>"><img class='icon rss' src='/rss.svg' alt='rss icon'></a>
-        <a href="http://www.trailjournals.com/journal/about/<%= hiker_id %>">
-      <% end %>
-      <% if signature %>
-        <%= signature %>
-      <% end %>
-      <% if hiker_id %>
-        </a>
-      <% end %>
-    </em>
+    <a href="http://trailjournals.com/journal/entry/<%= entry_id %>"><img class="icon rss" src="/trailjournals.png" alt="trailjournals logo"></a>
+    <% if hiker_id %>
+      <a href="<%= request.scheme %>://<%= request.host %>:<%= request.port %>/hiker?id=<%= hiker_id %>"><img class='icon rss' src='/rss.svg' alt='rss icon'></a>
+      <a href="http://www.trailjournals.com/journal/about/<%= hiker_id %>">
+    <% end %>
+    <% if signature %>
+      <em><%= signature %></em>
+    <% end %>
+    <% if hiker_id %>
+      </a>
+    <% end %>
   </p>
 </footer>
 <div class='nav'></div>

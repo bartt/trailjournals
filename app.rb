@@ -85,7 +85,8 @@ class TrailJournals < Sinatra::Base
   end
 
   get '/entry' do
-    href = "http://www.trailjournals.com/journal/entry/#{params['id']}"
+    entry_id = params['id']
+    href = "http://www.trailjournals.com/journal/entry/#{entry_id}"
     entry = Nokogiri::HTML(open(href))
 
     hiker_id = params['hiker_id']
@@ -124,6 +125,7 @@ class TrailJournals < Sinatra::Base
       :theme => request.cookies['theme'] || 'light',
       :title => title,
       :entry_title => entry_title,
+      :entry_id => entry_id,
       :date => date,
       :hiker_id => hiker_id,
       :avatar_href => avatar_href,
