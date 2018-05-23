@@ -48,6 +48,7 @@ body.light .logo svg path {
 .entry-form {
   margin-top: 1em;
 }
+.error,
 .published,
 .stats,
 .entry-form header {
@@ -55,7 +56,8 @@ body.light .logo svg path {
   margin-bottom: 1em;
 }
 .entry-form h2,
-.published time {
+.published time,
+.error .message {
   flex-grow: 1;
 }
 .entry-form h2 {

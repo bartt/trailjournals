@@ -86,7 +86,7 @@ class TrailJournals < Sinatra::Base
 
   get '/entry' do
     entry_id = params['id']
-    href = "http://www.trailjournals.com/journal/entry/#{entry_id}"
+    href = "http://wwww.trailjournals.com/journal/entry/#{entry_id}"
     entry = Nokogiri::HTML(open(href))
 
     hiker_id = params['hiker_id']
@@ -145,5 +145,13 @@ class TrailJournals < Sinatra::Base
   # Prevent 404 errors for the images in proxied trailjournals.com pages.
   get '/images/*' do
     200 # HTTP_OK
+  end
+
+  error do
+    erb :error, :locals => {
+        :title => 'Internal Server Error',
+        :theme => request.cookies['theme'] || 'light',
+        :error => env['sinatra.error']
+    }
   end
 end
