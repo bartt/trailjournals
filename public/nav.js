@@ -9,7 +9,7 @@ class Trailjournals {
 
   activateTheme (theme) {
     if (Trailjournals.THEMES.find((el) => {
-        return el == theme;})) {
+        return el === theme;})) {
       this.theme = theme;
     } else {
       this.theme = Trailjournals.THEMES[0];
@@ -20,7 +20,6 @@ class Trailjournals {
       (theme) => {
         document.body.classList.remove(theme);});
     document.body.classList.add(this.theme);
-    this.activeTheme = theme;
   }
 
   addThemeListener () {
@@ -29,10 +28,10 @@ class Trailjournals {
         this.handleThemeClick(e);});
   }
 
-  handleThemeClick (e) {
+  handleThemeClick () {
     const activeTheme = this.theme;
     const newTheme = Trailjournals.THEMES.find((t) => {
-      return t != activeTheme;});
+      return t !== activeTheme;});
     this.activateTheme(newTheme);
   }
 
@@ -42,6 +41,7 @@ class Trailjournals {
         .then((links) => {
           const nav = document.querySelector('.nav');
           let html = '';
+          let prefetch = '';
           links.forEach((link) => {
             const navId = link.text.toLowerCase();
             let url = '/entry?id=' + link.id;
@@ -50,10 +50,11 @@ class Trailjournals {
             }
             html += '<a href="' + url + '" id="' + navId + '">' + link.text + '</a> ';
             if (navId === 'next') {
-              html += '<link rel="prefetch" href="' + url + '">';
+              prefetch += '<link rel="prefetch" href="' + url + '">'; // All browsers
+              prefetch += '<link rel="preload" href="' + url + '">'; // Safari < 11.1
             }
           });
-          nav.innerHTML = html;
+          nav.innerHTML = html + prefetch;
         })
         .then(Trailjournals.addNavKeyListener);
     }
