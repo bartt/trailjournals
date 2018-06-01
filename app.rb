@@ -92,7 +92,7 @@ class TrailJournals < Sinatra::Base
     hiker_id = params['hiker_id']
     if hiker_id.nil?
       hiker_id = entry.css('a[href*=rss]').attr('href').value.split('/')[-2]
-    endª
+    end
 
     title = entry.css('.journal-title').first.text.gsub(/(\d{4})/, '\1 ')
     entry_title = entry.css('.entry-title')
