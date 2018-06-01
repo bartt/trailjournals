@@ -86,13 +86,13 @@ class TrailJournals < Sinatra::Base
 
   get '/entry' do
     entry_id = params['id']
-    href = "http://wwww.trailjournals.com/journal/entry/#{entry_id}"
+    href = "http://www.trailjournals.com/journal/entry/#{entry_id}"
     entry = Nokogiri::HTML(open(href))
 
     hiker_id = params['hiker_id']
     if hiker_id.nil?
       hiker_id = entry.css('a[href*=rss]').attr('href').value.split('/')[-2]
-    end
+    endª
 
     title = entry.css('.journal-title').first.text.gsub(/(\d{4})/, '\1 ')
     entry_title = entry.css('.entry-title')
