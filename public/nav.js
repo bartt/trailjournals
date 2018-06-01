@@ -43,12 +43,15 @@ class Trailjournals {
           const nav = document.querySelector('.nav');
           let html = '';
           links.forEach((link) => {
-            html += '<a href="/entry?id=' + link.id;
+            const navId = link.text.toLowerCase();
+            let url = /entry?id=' + link.id;
             if (this.hiker_id) {
-              html += '&hiker_id=' + this.hiker_id;
+              url += '&hiker_id=' + this.hiker_id;
             }
-            html += '" id="' + link.text.toLowerCase() + '">' + link.text +
-              '</a> ';
+            html += '<a href="' + url + '" id="' + navId + '">' + link.text + '</a> ';
+            if (navId === 'next') {
+              html += '<link rel="prefetch" href="' + url + '">';
+            }
           });
           nav.innerHTML = html;
         })
@@ -86,10 +89,10 @@ class Trailjournals {
           navId = 'first';
           break;
         case 74 /* j */:
-          navId = 'previous';
+          navId = 'next';
           break;
         case 75 /* k */:
-          navId = 'next';
+          navId = 'previous';
           break;
         case 76 /* l */:
           navId = 'last';
