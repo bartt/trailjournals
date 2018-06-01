@@ -44,7 +44,7 @@ class Trailjournals {
           let html = '';
           links.forEach((link) => {
             const navId = link.text.toLowerCase();
-            let url = /entry?id=' + link.id;
+            let url = '/entry?id=' + link.id;
             if (this.hiker_id) {
               url += '&hiker_id=' + this.hiker_id;
             }
