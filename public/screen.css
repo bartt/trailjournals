@@ -122,3 +122,10 @@ body.dark .theme .dark {
 .theme .light {
   fill: #f8f7f5;
 }
+@media screen
+    and (orientation: portrait)
+    and (min-resolution: 150dpi) {
+    body {
+        font-size: 200%;
+    }
+}
