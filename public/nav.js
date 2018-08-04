@@ -51,7 +51,7 @@ class Trailjournals {
             html += '<a href="' + url + '" id="' + navId + '">' + link.text + '</a> ';
             if (navId === 'next') {
               prefetch += '<link rel="prefetch" href="' + url + '">'; // All browsers
-              prefetch += '<link rel="preload" href="' + url + '">'; // Safari < 11.1
+              prefetch += '<link rel="preload" href="' + url + '" as="fetch">'; // Safari < 11.1
             }
           });
           nav.innerHTML = html + prefetch;

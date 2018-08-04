@@ -1,6 +1,5 @@
 body {
   font-family: "Verdana";
-  font-size: 15pt;
   display: flex;
   justify-content: center;
 }
@@ -19,7 +18,7 @@ article {
   max-width: 700px;
 }
 p {
-  line-height: 27pt;
+  line-height: 2rem;
 }
 header th {
   text-align: left;
@@ -35,25 +34,25 @@ body.light .logo svg path {
   fill: #494949
 }
 .years {
-  margin-left: 2em;
-  margin-bottom: 2em;
+  margin-left: 2rem;
+  margin-bottom: 2rem;
 }
 .entry-content-asset {
   width: 100%;
-  margin: 1.5em 0 .5em;
+  margin: 1.5rem 0 .5rem;
 }
 .entry-content .entry-content-asset {
   margin: 0;
 }
 .entry-form {
-  margin-top: 1em;
+  margin-top: 1rem;
 }
 .error,
 .published,
 .stats,
 .entry-form header {
   display: flex;
-  margin-bottom: 1em;
+  margin-bottom: 1rem;
 }
 .entry-form h2,
 .published time,
@@ -62,7 +61,7 @@ body.light .logo svg path {
 }
 .entry-form h2 {
   display: inline;
-  margin: 0 2em 0 0;
+  margin: 0 2rem 0 0;
 }
 .published time {
   font-style: italic;
@@ -70,7 +69,7 @@ body.light .logo svg path {
 .stats .avatar {
   height: 100px;
   width: 100px;
-  margin: .5em 1em 0 0;
+  margin: .5rem 1rem 0 0;
 }
 .theme {
   cursor: pointer;
@@ -104,10 +103,10 @@ body.light .logo svg path {
   flex-basis: auto;
 }
 .nav {
-  margin-bottom: 2em;
+  margin-bottom: 2rem;
 }
 .nav a + a {
-  margin-left: .5em;
+  margin-left: .5rem;
 }
 .theme svg {
   width: 100%;
@@ -122,10 +121,12 @@ body.dark .theme .dark {
 .theme .light {
   fill: #f8f7f5;
 }
-@media screen
-    and (orientation: portrait)
-    and (min-resolution: 150dpi) {
+@media only screen
+    and (orientation: portrait) {
     body {
-        font-size: 200%;
+        font-size: 2rem;
+    }
+    p {
+      line-height: 4rem;
     }
 }
