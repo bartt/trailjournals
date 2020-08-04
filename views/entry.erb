@@ -11,10 +11,10 @@
   </p>
   <div class='stats'>
     <% if hiker_id && avatar_href %>
-      <a href="http://www.trailjournals.com/journal/about/<%= hiker_id %>">
+      <a href="//www.trailjournals.com/journal/about/<%= hiker_id %>">
     <% end %>
     <% if avatar_href %>
-      <img class='avatar' src="http://www.trailjournals.com<%= avatar_href %>">
+      <img class='avatar' src="//www.trailjournals.com<%= avatar_href %>">
     <% end %>
     <% if hiker_id && avatar_href %>
       </a>
@@ -31,17 +31,17 @@
   </stats>
 </header>
 <% if img_href %>
-  <img src="http://www.trailjournals.com<%= img_href %>" alt='photo' class='entry-content-asset'/>
+  <img src="//www.trailjournals.com<%= img_href %>" alt='photo' class='entry-content-asset'/>
 <% end %>
 <% if body %>
   <section class='entry-content'><%= body %></section>
 <% end %>
 <footer>
   <p class='signature'>
-    <a href="http://trailjournals.com/journal/entry/<%= entry_id %>"><img class="icon rss" src="/trailjournals.png" alt="trailjournals logo"></a>
+    <a href="//trailjournals.com/journal/entry/<%= entry_id %>"><img class="icon rss" src="/trailjournals.png" alt="trailjournals logo"></a>
     <% if hiker_id %>
       <a href="<%= request.scheme %>://<%= request.host %>:<%= request.port %>/hiker?id=<%= hiker_id %>"><img class='icon rss' src='/rss.svg' alt='rss icon'></a>
-      <a href="http://www.trailjournals.com/journal/about/<%= hiker_id %>">
+      <a href="//www.trailjournals.com/journal/about/<%= hiker_id %>">
     <% end %>
     <% if signature %>
       <em><%= signature %></em>
