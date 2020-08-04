@@ -132,9 +132,9 @@ class TrailJournals < Sinatra::Base
       :entry_id => entry_id,
       :date => date,
       :hiker_id => hiker_id,
-      :avatar_href => avatar_href,
+      :avatar_href => avatar_href.gsub(/^http:/, ''),
       :stats => stats,
-      :img_href => img_href,
+      :img_href => img_href.gsub(/^http:/, ''),
       :body => body,
       :signature => signature,
       :request => request
