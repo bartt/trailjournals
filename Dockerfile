@@ -1,5 +1,5 @@
 FROM library/ruby:2.4.1-alpine
-MAINTAINER Bart Teeuwisse <bart@thecodemill.biz>
+LABEL author="Bart Teeuwisse <bart@thecodemill.biz>"
 
 RUN apk add --no-cache git build-base libxml2-dev libxslt-dev
 

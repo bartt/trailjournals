@@ -6,6 +6,10 @@ require 'time'
 
 DIGEST_KEY = 'super secret'
 
+def normalize_id(id) 
+  /(?<nid>\d+)$/ =~ id ? nid : id
+end
+
 class TrailJournals < Sinatra::Base
   configure do
     enable :logging
@@ -27,7 +31,7 @@ class TrailJournals < Sinatra::Base
 
   get '/pct', :provides => %w(rss atom xml) do
 
-    feed = Nokogiri::XML(open('http://www.trailjournals.com/rss/index.cfm'))
+    feed = Nokogiri::XML(open('http://trailjournals.com/rss/index.cfm'))
     href = "#{request.scheme}//#{request.host}:#{request.port}#{request.path}"
     entry_href = "#{request.scheme}://#{request.host}:#{request.port}/entry?id="
 
@@ -56,7 +60,7 @@ class TrailJournals < Sinatra::Base
 
   get '/hiker', :provides => %w(rss atom xml) do
 
-    url = params['id'] ? "http://www.trailjournals.com/journal/rss/#{params['id']}/xml" : params['url']
+    url = params['id'] ? "http://trailjournals.com/journal/rss/#{params['id']}/xml" : params['url']
     feed = Nokogiri::XML(open(url))
     hiker_id = params['id'] || url.split('/')[-2]
     href = "#{request.scheme}://#{request.host}:#{request.port}#{request.path}?id=#{hiker_id}"
@@ -85,8 +89,8 @@ class TrailJournals < Sinatra::Base
   end
 
   get '/entry' do
-    entry_id = params['id']
-    href = "http://www.trailjournals.com/journal/entry/#{entry_id}"
+    entry_id = normalize_id(params['id'])
+    href = "http://trailjournals.com/journal/entry/#{entry_id}"
     entry = Nokogiri::HTML(open(href))
 
     hiker_id = params['hiker_id']
@@ -138,7 +142,7 @@ class TrailJournals < Sinatra::Base
   end
 
   get '/proxy' do
-    href = "http://www.trailjournals.com/entry.cfm?id=#{params['id']}"
+    href = "http://www.trailjournals.com/entry.cfm?id=#{normalize_id(params['id'])}"
     erb open(href).read, :layout => false
   end
 
