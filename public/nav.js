@@ -15,7 +15,7 @@ class Trailjournals {
       this.theme = Trailjournals.THEMES[0];
     }
     document.cookie =
-      'theme=' + this.theme + '; max-age=' + Trailjournals.YEAR + '; path=/;';
+      'theme=' + this.theme + '; max-age=' + Trailjournals.YEAR + '; path=/; samesite=strict; secure';
     Trailjournals.THEMES.forEach(
       (theme) => {
         document.body.classList.remove(theme);});
