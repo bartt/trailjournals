@@ -119,8 +119,8 @@ class TrailJournals < Sinatra::Base
           img = node.css('img').first rescue nil
           if img then
             img['class'] = 'entry-content-asset'
-            if img['href'] !~ '//trailjournals.com' then
-              img['href'] = '//trailjournals.com' + img['href']
+            if /^\/\/trailjournals.com/ !~ img['src'] then
+              img['src'] = '//trailjournals.com' + img['src']
             end
             body += img.to_html
           end

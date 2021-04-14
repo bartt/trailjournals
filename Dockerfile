@@ -3,10 +3,15 @@ LABEL author="Bart Teeuwisse <bart@thecodemill.biz>"
 
 RUN apk add --no-cache git build-base libxml2-dev libxslt-dev
 
-RUN cd / && \
-  git clone https://github.com/bartt/trailjournals.git && \
-  cd /trailjournals && bundle config build.nokogiri --use-system-libraries && \
-  bundle install --without=development
+RUN mkdir /trailjournals
+COPY Gemfile Gemfile.lock app.rb config.ru /trailjournals/
+COPY views/ /trailjournals/views/
+COPY public/ /trailjournals/public/
+
+RUN cd /trailjournals && \
+  gem install bundler && \
+  bundle config build.nokogiri --use-system-libraries && \
+  bundle install --without development
 
 VOLUME /trailjournals
 WORKDIR /trailjournals

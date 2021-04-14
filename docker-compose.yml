@@ -1,0 +1,7 @@
+web:
+  build: .
+  ports:
+    - "9292:9292"
+  volumes:
+    - .:/trailjournals
+  command: bundler exec rackup --env production
