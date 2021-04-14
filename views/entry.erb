@@ -31,7 +31,11 @@
   </stats>
 </header>
 <% if img_href %>
-  <img src="//www.trailjournals.com<%= img_href %>" alt='photo' class='entry-content-asset'/>
+  <% if /^\// =~ img_href %>
+    <img src="//www.trailjournals.com<%= img_href %>" alt='photo' class='entry-content-asset'/>
+  <% else %>
+    <img src="<%= img_href %>" alt='photo' class='entry-content-asset'/>
+  <% end %>
 <% end %>
 <% if body %>
   <section class='entry-content'><%= body %></section>
