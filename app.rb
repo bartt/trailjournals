@@ -6,7 +6,7 @@ require 'time'
 
 DIGEST_KEY = 'super secret'
 
-def normalize_id(id) 
+def normalize_id(id)
   /(?<nid>\d+)$/ =~ id ? nid : id
 end
 
@@ -119,6 +119,9 @@ class TrailJournals < Sinatra::Base
           img = node.css('img').first rescue nil
           if img then
             img['class'] = 'entry-content-asset'
+            if img['href'] !=~ '//trailjournals.com' then
+              img['href'] = '//trailjournals.com' + img['href']
+            end
             body += img.to_html
           end
         end
