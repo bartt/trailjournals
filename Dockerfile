@@ -1,4 +1,4 @@
-FROM library/ruby:2.6.1-alpine
+FROM library/ruby:2-alpine
 LABEL author="Bart Teeuwisse <bart@thecodemill.biz>"
 
 RUN apk add --no-cache git build-base libxml2-dev libxslt-dev && \
