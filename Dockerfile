@@ -1,7 +1,7 @@
-FROM library/ruby:2-alpine
+FROM library/ruby:3-alpine
 LABEL author="Bart Teeuwisse <bart@thecodemill.biz>"
 
-RUN apk add --no-cache git build-base libxml2-dev libxslt-dev && \
+RUN apk add --no-cache build-base libxml2-dev libxslt-dev && \
   mkdir /trailjournals
 COPY Gemfile app.rb config.ru /trailjournals/
 COPY views/ /trailjournals/views/
@@ -12,7 +12,7 @@ RUN cd /trailjournals && \
   bundle config build.nokogiri --use-system-libraries && \
   bundle config set --local without 'development' && \
   bundle install && \
-  apk del git build-base libxml2-dev libxslt-dev
+  apk del build-base libxml2-dev libxslt-dev
 
 VOLUME /trailjournals
 WORKDIR /trailjournals
