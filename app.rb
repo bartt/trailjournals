@@ -29,39 +29,9 @@ class TrailJournals < Sinatra::Base
     }
   end
 
-  get '/pct', :provides => %w(rss atom xml) do
-
-    feed = Nokogiri::XML(open('https://trailjournals.com/rss/index.cfm'))
-    href = "#{request.scheme}//#{request.host}:#{request.port}#{request.path}"
-    entry_href = "#{request.scheme}://#{request.host}:#{request.port}/entry?id="
-
-    nokogiri do |xml|
-      xml.rss('version' => '2.0', 'xmlns:atom' => 'http://www.w3.org/2005/Atom') do
-        channel do
-          xml['atom'].link('href' => href, 'rel' => 'self', 'type' => 'application/rss+xml')
-          title "#{feed.xpath('/rss/channel/title').text} : Pacific Crest Trail"
-          link feed.xpath('/rss/channel/link').text
-          description 'Latest PCT posts on trailjournals.com'
-          feed.xpath('/rss/channel/item[contains(.,"Pacific")]').each do |post|
-            item {
-              title post.xpath('./title').text
-              pubDate DateTime.parse(post.xpath('./pubDate').text).strftime('%a, %d %b %Y %H:%M:%S %z')
-              orig_link = post.xpath('./link')
-              print_link = entry_href + orig_link.text.split('=').pop
-              link print_link
-              description post.xpath('./description').text
-              guid(OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), DIGEST_KEY, orig_link.to_s), 'isPermaLink' => 'false')
-            }
-          end
-        end
-      end
-    end
-  end
-
   get '/hiker', :provides => %w(rss atom xml) do
-
     url = params['id'] ? "https://trailjournals.com/journal/rss/#{params['id']}/xml" : params['url']
-    feed = Nokogiri::XML(open(url))
+    feed = Nokogiri::XML(URI.open(url))
     hiker_id = params['id'] || url.split('/')[-2]
     href = "#{request.scheme}://#{request.host}:#{request.port}#{request.path}?id=#{hiker_id}"
     entry_href = "#{request.scheme}://#{request.host}:#{request.port}/entry?id=%d&hiker_id=#{hiker_id}"
@@ -91,7 +61,7 @@ class TrailJournals < Sinatra::Base
   get '/entry' do
     entry_id = normalize_id(params['id'])
     href = "https://trailjournals.com/journal/entry/#{entry_id}"
-    entry = Nokogiri::HTML(open(href))
+    entry = Nokogiri::HTML(URI.open(href))
 
     hiker_id = params['hiker_id']
     if hiker_id.nil?
@@ -147,7 +117,7 @@ class TrailJournals < Sinatra::Base
 
   get '/proxy' do
     href = "https://www.trailjournals.com/entry.cfm?id=#{normalize_id(params['id'])}"
-    erb open(href).read, :layout => false
+    erb URI.open(href).read, :layout => false
   end
 
   # Prevent 404 errors for the images in proxied trailjournals.com pages.

@@ -20,4 +20,4 @@ WORKDIR /trailjournals
 EXPOSE 9292
 USER nobody
 
-CMD ["bundler", "exec", "rackup", "--env", "production"]
+CMD ["rackup", "--env", "production"]
