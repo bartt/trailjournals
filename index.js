@@ -1,12 +1,13 @@
 import debug from 'debug';
-import express, { response } from 'express'
-import { create } from 'express-handlebars'
+import express, {response} from 'express'
+import {create} from 'express-handlebars'
 import cookieParser from 'cookie-parser'
 import fetch from 'node-fetch';
 import fs from 'fs'
 import RSS from 'rss'
 import Parser from 'rss-parser';
 import {createHmac} from 'node:crypto';
+import {parse} from 'node-html-parser'
 
 const DIGEST_KEY = 'super secret'
 const app = express()
@@ -56,8 +57,8 @@ app.get('/hiker', (req, res) => {
   const hikerHref = `${req.protocol}://${req.hostname}${req.path}?id=${hikerId}`
   const entryHref = (entryId) => `${req.protocol}://${req.hostname}/entry?id=${entryId}&hiker_id=${hikerId}`
   fetch(feedUrl, fetchSettings).then(async (fetchRes) => {
-    let feed = await new Parser().parseString(await fetchRes.text())
-    let rss = new RSS({
+    const feed = await new Parser().parseString(await fetchRes.text())
+    const rss = new RSS({
       title: feed.title,
       description: feed.description,
       link: feed.link,
@@ -84,22 +85,55 @@ app.get('/hiker', (req, res) => {
   })
 })
 
-app.get('/entry', (req, res) => { 
+app.get('/entry', async (req, res) => { 
+  const entryId = normalizeId(req.query.id)
+  const entryHref = `https://trailjournals.com/journal/entry/${entryId}`
+  const fetchRes = await fetch(entryHref, fetchSettings)
+  const entry = parse(await fetchRes.text())
+
+  const title = entry.querySelector('.journal-title').text.replace(/\d{4}/, "$1 ")
+  const entryTitle = entry.querySelector('.entry-title')
+  const date = entry.querySelector('.entry-date').text.trim()
+  const hikerId = req.query.hiker_id || entry.querySelector('a[href*=rss]').href.split('/')[-2]
+  const hikerHref = `${req.protocol}://${req.hostname}/hiker?id=${hikerId}`
+
+  const stats = entry.querySelectorAll('.panel-heading .row:nth-child(n+2) span').map((stat) => stat.text.trim())
+  const imgHref = entry.querySelector('.entry img').src
+  const avatarHref = entry.querySelector('.journal-thumbnail img').src
+  const signature = entry.querySelector('.journal-signature').text.trim()
+
+  let body = ""
+  for (const node of entry.querySelector('.entry')) {
+    if (['text', 'p', 'h4'].includes(node.name)) {
+      const text = node.text.trim()
+      if (text.length > 0 && !/^\W+$/.test(text)) {
+        body += text
+        const img = node.querySelector('img')
+        if (img) {
+          img['class'] = 'entry-content-asset'
+          if (!/\/\/trailjournals.com/.test(img.src) && !/^data:/.test(img.src)) {
+            img.src = `//trailjournals.com${img.src}` 
+          }
+          body += img.outerHTML
+        }
+      }
+    }
+  }
+
   res.render('entry', {
-    title: "TESTING", 
+    title, 
     theme: req.cookies.theme || 'light',
-    yingYang: yingYang,
-    // entryTitle:
-    // entryId:
-    // date:
-    // hikerId:
-    // hikerHref:
-    // avatarHref:
-    // stats:
-    // imgHref:
-    // body:
-    // signature:
-    // request:
+    yingYang,
+    entryId,
+    entryTitle,
+    date,
+    hikerId,
+    hikerHref,
+    stats,
+    avatarHref,
+    imgHref,
+    body,
+    signature,
   })
 })
 
