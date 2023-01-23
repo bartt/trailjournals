@@ -1,0 +1,41 @@
+<header>
+  <h1 class='entry-title'>{{ title }}</h1>
+  {{#if entryTitle }}
+  <h2>{{ entry_title }}</h2>
+  {{/if}}
+  <p class="published">
+    {{#if date }}
+    <time datetime="{{ date }}">{{ date }}</time>
+    {{/if}}
+    <span class='theme icon' title='background color toggle'>{{{ yingYang }}}</span>
+  </p>
+  <div class="stats">
+  </div>
+</header>
+{{#if imgHref }}
+  {{#if (isRelative imgHref) }}
+    <img src="{{ imgHref }}" alt="photo" class='entry-content-asset'>
+  {{else}}
+    <img src="//www.trailjournals.com{{ imgHref }}" alt='photo' class='entry-content-asset'/>
+  {{/if}}
+{{/if}}
+{{#if body }}
+<section class="entry-content">{{{ body }}}</section>
+{{/if}}
+<footer>
+  <p class="signature">
+    <a href="//trailjournals.com/journal/entry/{{ entryId }}"><img class="icon rss" src="/trailjournals.png"
+      alt="trailjournals logo"></a>
+    {{#if hikerId }}
+      <a href="{{ hikerHref }}"><img class='icon rss' src='/rss.svg' alt='rss icon'></a>
+      <a href="//www.trailjournals.com/journal/about/{{ hikerId }}">
+    {{/if}}
+    {{#if signature }}
+      <em>{{ signature}}</em>
+    {{/if}}
+    {{#if hikerId }}
+      </a>
+    {{/if}}
+  </p>
+</footer>
+<div class='nav'></div>

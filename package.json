@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "dev": "DEBUG=trailjournals nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -20,8 +20,12 @@
   "homepage": "https://github.com/bartt/trailjournals#readme",
   "dependencies": {
     "cookie-parser": "^1.4.6",
+    "debug": "^4.3.4",
     "express": "^4.18.2",
-    "express-handlebars": "^6.0.6"
+    "express-handlebars": "^6.0.6",
+    "node-fetch": "^3.3.0",
+    "rss": "^1.2.2",
+    "rss-parser": "^3.12.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
