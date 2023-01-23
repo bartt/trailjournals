@@ -30,6 +30,19 @@ app.get("/", (req, res) => {
   })
 })
 
+app.get('/proxy', (req, res) => {
+  const id = normalizeId(req.query.id) 
+  const href = `https://www.trailjournals.com/entry.cfm?id=${id}`
+  res.send(href)
+  // erb URI.open(href).read, :layout => false
+})
+
+// Prevent 404 errors for the images in proxied trailjournals.com pages.
+app.get('/images/*', (req, res) => {
+  res.status(200)
+  res.send()
+})
+
 function errorHandler(err, req, res, next) {
   res.status(500)
   res.render('error', {
@@ -41,6 +54,11 @@ function errorHandler(err, req, res, next) {
 }
 
 app.use(errorHandler)
+
+function normalizeId(id) {
+  const matchData = id.match(/(\d+)$/) 
+  return matchData.length > 0 ? matchData[0] : id
+}
 
 app.listen(8000, () => console.log("Server Listening on Port 8000"))
 
