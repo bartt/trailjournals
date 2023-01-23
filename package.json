@@ -1,0 +1,29 @@
+{
+  "name": "trailjournals",
+  "version": "0.1.0",
+  "description": "Trailjournals.com proxy",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bartt/trailjournals.git"
+  },
+  "author": "Bart Teeuwisse",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bartt/trailjournals/issues"
+  },
+  "homepage": "https://github.com/bartt/trailjournals#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
