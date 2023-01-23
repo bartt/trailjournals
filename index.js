@@ -15,7 +15,6 @@ const logo = fs.readFileSync('public/favicon.svg')
 const yingYang = fs.readFileSync('public/ying-yang.svg')
 
 app.get("/", (req, res) => {
-  throw Error("Call the police")
   const currentYear = (new Date()).getFullYear()
   res.render("index", {
     theme: req.cookies.theme || 'light',
