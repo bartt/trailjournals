@@ -20,9 +20,8 @@ const fetchSettings = {
 
 const handlebars = create({
   helpers: {
-    isRelative(value) {
-      const re = new RegExp('^\/\/')
-      return !re.test(value)
+    isEven(value) {
+      return value % 2 ? false : true
     }
   }
 })
@@ -104,19 +103,19 @@ app.get('/entry', async (req, res) => {
   const hikerId = req.query.hiker_id || entry.querySelector('a[href*=rss]').attrs.href.split('/').splice(-2).shift()
   const hikerHref = `${req.protocol}://${req.hostname}/hiker?id=${hikerId}`
 
-  const stats = entry.querySelectorAll('.panel-heading .row:nth-child(n+2) span').map((stat) => stat.text.trim())
+  const stats = Array.from(entry.querySelectorAll('.panel-heading .row:nth-child(n+2) span')).map((stat) => stat.textContent.trim())
   const imgHref = entry.querySelector('.entry img') && entry.querySelector('.entry img').attrs.src
   const avatarHref = entry.querySelector('.journal-thumbnail img') && entry.querySelector('.journal-thumbnail img').attrs.src
   const signature = entry.querySelector('.journal-signature') && entry.querySelector('.journal-signature').text.trim()
 
   let body = ""
   for (const node of entry.querySelector('.entry').childNodes) {
-    if (['text', 'p', 'h4', 'ul', 'ol'].includes((node.tagName || '').toLowerCase())) {
+    if (node.nodeType == 3 || ['text', 'p', 'h4', 'ul', 'ol'].includes((node.tagName || '').toLowerCase())) {
       const text = node.text.trim()
-      // Filter out blank nodes 
+      // Filter out blank nodes without children
       if (node.childNodes.length > 0 || (text.length > 0 && !/^\W+$/.test(text))) {
         // Append augmented markup; `setAttribute` also changes `outerHTML` of the parent node.
-        body += node.outerHTML
+        body += node.outerHTML || `<p>${text}</p>`
       }
     }
   }

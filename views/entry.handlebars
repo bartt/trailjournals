@@ -7,6 +7,17 @@
     <span class='theme icon' title='background color toggle'>{{{ yingYang }}}</span>
   </p>
   <div class="stats">
+      <table>
+      {{#if stats }}
+        {{#each stats }}
+          {{#if (isEven @index) }}
+            <tr><th>{{ this }}</th>
+          {{else}}
+            <td>{{ this }}</td></tr>
+          {{/if}}
+        {{/each }}
+      {{/if }}
+    </table>
   </div>
 </header>
 {{#if imgHref }}
