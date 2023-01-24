@@ -6,9 +6,9 @@
     {{/if}}
     <span class='theme icon' title='background color toggle'>{{{ yingYang }}}</span>
   </p>
-  <div class="stats">
+  {{#if stats }}
+    <div class="stats">
       <table>
-      {{#if stats }}
         {{#each stats }}
           {{#if (isEven @index) }}
             <tr><th>{{ this }}</th>
@@ -16,9 +16,9 @@
             <td>{{ this }}</td></tr>
           {{/if}}
         {{/each }}
-      {{/if }}
     </table>
   </div>
+{{/if }}
 </header>
 {{#if imgHref }}
   <img src="{{ imgHref }}" alt="photo" class='entry-content-asset'>
