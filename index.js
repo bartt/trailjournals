@@ -91,14 +91,14 @@ app.get('/entry', async (req, res) => {
   const fetchRes = await fetch(entryHref, fetchSettings)
   const entry = parse(await fetchRes.text())
 
-  const title = entry.querySelector('.journal-title').text.replace(/\d{4}/, "$1 ")
-  const entryTitle = entry.querySelector('.entry-title')
+  const title = entry.querySelector('.journal-title') && entry.querySelector('.journal-title').text.replace(/\d{4}/, "$1 ")
+  const entryTitle = entry.querySelector('.entry-title') && entry.querySelector('.journal-title').text
   const date = entry.querySelector('.entry-date').text.trim()
   const hikerId = req.query.hiker_id || entry.querySelector('a[href*=rss]').attrs.href.split('/').splice(-2).shift()
   const hikerHref = `${req.protocol}://${req.hostname}/hiker?id=${hikerId}`
 
   const stats = entry.querySelectorAll('.panel-heading .row:nth-child(n+2) span').map((stat) => stat.text.trim())
-  const imgHref = entry.querySelector('.entry img').attrs.src
+  const imgHref = entry.querySelector('.entry img') && entry.querySelector('.entry img').attrs.src
   const avatarHref = entry.querySelector('.journal-thumbnail img') && entry.querySelector('.journal-thumbnail img').attrs.src
   const signature = entry.querySelector('.journal-signature') && entry.querySelector('.journal-signature').text.trim()
 
