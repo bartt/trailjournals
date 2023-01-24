@@ -92,7 +92,6 @@ app.get('/entry', async (req, res) => {
   const entry = parse(await fetchRes.text())
 
   const title = entry.querySelector('.journal-title') && entry.querySelector('.journal-title').text.replace(/(\d{4})/, "$1 ").trim()
-  const entryTitle = entry.querySelector('.entry-title') && entry.querySelector('.journal-title').text.trim()
   const date = entry.querySelector('.entry-date').text.trim()
   const hikerId = req.query.hiker_id || entry.querySelector('a[href*=rss]').attrs.href.split('/').splice(-2).shift()
   const hikerHref = `${req.protocol}://${req.hostname}/hiker?id=${hikerId}`
@@ -126,7 +125,6 @@ app.get('/entry', async (req, res) => {
     theme: req.cookies.theme || 'light',
     yingYang,
     entryId,
-    entryTitle,
     date,
     hikerId,
     hikerHref,
