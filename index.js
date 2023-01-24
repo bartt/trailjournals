@@ -103,7 +103,7 @@ app.get('/entry', async (req, res) => {
 
   let body = ""
   for (const node of entry.querySelector('.entry').childNodes) {
-    if (['text', 'p', 'h4'].includes((node.tagName || '').toLowerCase())) {
+    if (['text', 'p', 'h4', 'ul'].includes((node.tagName || '').toLowerCase())) {
       const text = node.text.trim()
       // Filter out blank nodes 
       if (text.length > 0 && !/^\W+$/.test(text)) {
