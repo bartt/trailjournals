@@ -20,6 +20,9 @@ article {
 p {
   line-height: 2rem;
 }
+li {
+  margin-bottom: 1rem;
+}
 header th {
   text-align: left;
 }
