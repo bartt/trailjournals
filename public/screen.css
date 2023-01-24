@@ -17,7 +17,7 @@ body.dark a {
 article {
   max-width: 56rem;
 }
-p {
+p, li {
   line-height: 2rem;
 }
 li {
