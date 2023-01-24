@@ -7,7 +7,6 @@ COPY views/ /trailjournals/views/
 COPY public/ /trailjournals/public/
 
 RUN cd /trailjournals && \
-  find views -name "*.erb" -exec rm {} \; && \
   npm install --production
 
 VOLUME /trailjournals
