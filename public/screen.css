@@ -87,6 +87,7 @@ body.light .logo svg path {
 .icon.rss {
   width: 48px;
   height: 48px;
+  margin-right: .5rem;
 }
 .signature {
   font-style: italic;
@@ -100,10 +101,7 @@ body.light .logo svg path {
   width: 100%;
 }
 .signature a {
-  flex-basis: 70px;
-}
-.signature a:last-child {
-  flex-basis: auto;
+  flex-basis: fit-content;
 }
 .nav {
   margin-bottom: 2rem;
@@ -123,13 +121,4 @@ body.dark .theme .dark {
 }
 .theme .light {
   fill: #f8f7f5;
-}
-@media only screen
-    and (orientation: portrait) {
-    body {
-        font-size: 2.5rem;
-    }
-    p {
-      line-height: 4rem;
-    }
 }

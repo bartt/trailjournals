@@ -1,13 +1,13 @@
 import debug from 'debug';
-import express, {response} from 'express'
-import {create} from 'express-handlebars'
+import express, { response } from 'express'
+import { create } from 'express-handlebars'
 import cookieParser from 'cookie-parser'
 import fetch from 'node-fetch';
 import fs from 'fs'
 import RSS from 'rss'
 import Parser from 'rss-parser';
-import {createHmac} from 'node:crypto';
-import {parse} from 'node-html-parser'
+import { createHmac } from 'node:crypto';
+import { parse } from 'node-html-parser'
 
 const DIGEST_KEY = 'super secret'
 const app = express()
@@ -21,7 +21,7 @@ const fetchSettings = {
 const handlebars = create({
   helpers: {
     isRelative(value) {
-      const re = new RegExp('^\/')
+      const re = new RegExp('^\/\/')
       return !re.test(value)
     }
   }
@@ -81,16 +81,24 @@ app.get('/hiker', (req, res) => {
     log(rss)
     res.status(200)
     res.type('text/xml')
-    res.send(rss.xml({indent: true}))
+    res.send(rss.xml({ indent: true }))
   })
 })
 
-app.get('/entry', async (req, res) => { 
+app.get('/entry', async (req, res) => {
   const entryId = normalizeId(req.query.id)
   const entryHref = `https://trailjournals.com/journal/entry/${entryId}`
   const fetchRes = await fetch(entryHref, fetchSettings)
   const entry = parse(await fetchRes.text())
 
+  // Directly link to images on trailjournals.com. Don't proxy.
+  for (const img of entry.querySelectorAll('img')) {
+    img.setAttribute('class', 'entry-content-asset')
+    if (!/\/\/trailjournals.com/.test(img.attrs.src) && !/^data:/.test(img.attrs.src)) {
+      img.setAttribute('src', `//trailjournals.com${img.attrs.src}`)
+    }
+  }
+  
   const title = entry.querySelector('.journal-title') && entry.querySelector('.journal-title').text.replace(/(\d{4})/, "$1 ").trim()
   const date = entry.querySelector('.entry-date').text.trim()
   const hikerId = req.query.hiker_id || entry.querySelector('a[href*=rss]').attrs.href.split('/').splice(-2).shift()
@@ -106,14 +114,7 @@ app.get('/entry', async (req, res) => {
     if (['text', 'p', 'h4', 'ul', 'ol'].includes((node.tagName || '').toLowerCase())) {
       const text = node.text.trim()
       // Filter out blank nodes 
-      if (text.length > 0 && !/^\W+$/.test(text)) {
-        // Directly link to images on trailjournals.com. Don't proxy.
-        for (const img of node.querySelectorAll('img')) {
-          img.setAttribute('class', 'entry-content-asset')
-          if (!/\/\/trailjournals.com/.test(img.attrs.src) && !/^data:/.test(img.attrs.src)) {
-            img.setAttribute('src', `//trailjournals.com${img.attrs.src}`) 
-          }
-        }
+      if (node.childNodes.length > 0 || (text.length > 0 && !/^\W+$/.test(text))) {
         // Append augmented markup; `setAttribute` also changes `outerHTML` of the parent node.
         body += node.outerHTML
       }
@@ -121,7 +122,7 @@ app.get('/entry', async (req, res) => {
   }
 
   res.render('entry', {
-    title, 
+    title,
     theme: req.cookies.theme || 'light',
     yingYang,
     entryId,
@@ -137,7 +138,7 @@ app.get('/entry', async (req, res) => {
 })
 
 app.get('/proxy', (req, res) => {
-  const id = normalizeId(req.query.id) 
+  const id = normalizeId(req.query.id)
   const url = `https://www.trailjournals.com/entry.cfm?id=${id}`
   fetch(url, fetchSettings).then(async (fetchRes) => {
     const body = await fetchRes.text()
@@ -165,7 +166,7 @@ function errorHandler(err, req, res, next) {
 app.use(errorHandler)
 
 function normalizeId(id) {
-  const matchData = id.match(/(\d+)$/) 
+  const matchData = id.match(/(\d+)$/)
   return matchData.length > 0 ? matchData[0] : id
 }
 

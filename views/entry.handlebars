@@ -10,11 +10,7 @@
   </div>
 </header>
 {{#if imgHref }}
-  {{#if (isRelative imgHref) }}
-    <img src="{{ imgHref }}" alt="photo" class='entry-content-asset'>
-  {{else}}
-    <img src="//www.trailjournals.com{{ imgHref }}" alt='photo' class='entry-content-asset'/>
-  {{/if}}
+  <img src="{{ imgHref }}" alt="photo" class='entry-content-asset'>
 {{/if}}
 {{#if body }}
 <section class="entry-content">{{{ body }}}</section>
