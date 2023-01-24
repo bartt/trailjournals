@@ -46,8 +46,8 @@ app.get("/", (req, res) => {
       { abbr: 'PCT', path: 'pacific_crest_trail' }
     ],
     years: [...Array(4)].map((_, offset) => currentYear - offset).reverse(),
-    logo: logo,
-    yingYang: yingYang
+    logo,
+    yingYang,
   })
 })
 
@@ -94,28 +94,29 @@ app.get('/entry', async (req, res) => {
   const title = entry.querySelector('.journal-title').text.replace(/\d{4}/, "$1 ")
   const entryTitle = entry.querySelector('.entry-title')
   const date = entry.querySelector('.entry-date').text.trim()
-  const hikerId = req.query.hiker_id || entry.querySelector('a[href*=rss]').href.split('/')[-2]
+  const hikerId = req.query.hiker_id || entry.querySelector('a[href*=rss]').attrs.href.split('/').splice(-2).shift()
   const hikerHref = `${req.protocol}://${req.hostname}/hiker?id=${hikerId}`
 
   const stats = entry.querySelectorAll('.panel-heading .row:nth-child(n+2) span').map((stat) => stat.text.trim())
-  const imgHref = entry.querySelector('.entry img').src
-  const avatarHref = entry.querySelector('.journal-thumbnail img').src
-  const signature = entry.querySelector('.journal-signature').text.trim()
+  const imgHref = entry.querySelector('.entry img').attrs.src
+  const avatarHref = entry.querySelector('.journal-thumbnail img') && entry.querySelector('.journal-thumbnail img').attrs.src
+  const signature = entry.querySelector('.journal-signature') && entry.querySelector('.journal-signature').text.trim()
 
   let body = ""
-  for (const node of entry.querySelector('.entry')) {
-    if (['text', 'p', 'h4'].includes(node.name)) {
+  for (const node of entry.querySelector('.entry').childNodes) {
+    if (['text', 'p', 'h4'].includes((node.tagName || '').toLowerCase())) {
       const text = node.text.trim()
+      // Filter out blank nodes 
       if (text.length > 0 && !/^\W+$/.test(text)) {
-        body += text
-        const img = node.querySelector('img')
-        if (img) {
-          img['class'] = 'entry-content-asset'
-          if (!/\/\/trailjournals.com/.test(img.src) && !/^data:/.test(img.src)) {
-            img.src = `//trailjournals.com${img.src}` 
+        // Directly link to images on trailjournals.com. Don't proxy.
+        for (const img of node.querySelectorAll('img')) {
+          img.setAttribute('class', 'entry-content-asset')
+          if (!/\/\/trailjournals.com/.test(img.attrs.src) && !/^data:/.test(img.attrs.src)) {
+            img.setAttribute('src', `//trailjournals.com${img.attrs.src}`) 
           }
-          body += img.outerHTML
         }
+        // Append augmented markup; `setAttribute` also changes `outerHTML` of the parent node.
+        body += node.outerHTML
       }
     }
   }
@@ -158,7 +159,7 @@ function errorHandler(err, req, res, next) {
   res.render('error', {
     title: 'Internal Server Error',
     theme: req.cookies.theme || 'light',
-    yingYang: yingYang,
+    yingYang,
     error: err
   })
 }
@@ -177,4 +178,3 @@ function log(msg) {
 }
 
 app.listen(8000, () => console.log("Server Listening on Port 8000"))
-
