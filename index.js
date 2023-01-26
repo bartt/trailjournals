@@ -110,10 +110,10 @@ app.get('/entry', async (req, res) => {
 
   let body = ""
   for (const node of entry.querySelector('.entry').childNodes) {
-    if (node.nodeType == 3 || ['text', 'p', 'h4', 'ul', 'ol'].includes((node.tagName || '').toLowerCase())) {
+    if (node.nodeType == 3 || ['p', 'h4', 'ul', 'ol'].includes((node.tagName || '').toLowerCase())) {
       const text = node.text.trim()
       // Filter out blank nodes without children
-      if (node.childNodes.length > 0 || (text.length > 0 && !/^\W+$/.test(text))) {
+      if (text.length > 0 && !/^\W+$/.test(text) || (node.querySelector && node.querySelector('img'))) {
         // Append augmented markup; `setAttribute` also changes `outerHTML` of the parent node.
         body += node.outerHTML || `<p>${text}</p>`
       }
