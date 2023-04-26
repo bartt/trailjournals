@@ -27,7 +27,7 @@
     "node-fetch": "^3.3.0",
     "node-html-parser": "^6.1.4",
     "rss": "^1.2.2",
-    "rss-parser": "^3.12.0"
+    "rss-parser": "^3.13.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
