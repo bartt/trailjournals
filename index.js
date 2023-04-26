@@ -8,6 +8,7 @@ import RSS from 'rss'
 import Parser from 'rss-parser';
 import { createHmac } from 'node:crypto';
 import { parse } from 'node-html-parser'
+import morgan from 'morgan';
 
 const DIGEST_KEY = 'super secret'
 const app = express()
@@ -30,6 +31,7 @@ app.set("view engine", "handlebars")
 app.set('views', './views')
 app.use(cookieParser())
 app.use(express.static('public'))
+app.use(morgan('combined'))
 
 const logo = fs.readFileSync('public/favicon.svg')
 const yingYang = fs.readFileSync('public/ying-yang.svg')

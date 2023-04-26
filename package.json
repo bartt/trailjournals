@@ -23,6 +23,7 @@
     "debug": "^4.3.4",
     "express": "^4.18.2",
     "express-handlebars": "^6.0.6",
+    "morgan": "^1.10.0",
     "node-fetch": "^3.3.0",
     "node-html-parser": "^6.1.4",
     "rss": "^1.2.2",
