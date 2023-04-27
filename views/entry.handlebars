@@ -30,8 +30,13 @@
   <p class="signature">
     <a href="//trailjournals.com/journal/entry/{{ entryId }}"><img class="icon rss" src="/trailjournals.png"
       alt="trailjournals logo"></a>
+    {{#if hikerHref }}
+      <a href="{{ hikerHref }}"><img class="icon rss" src="/rss.svg" alt="rss icon"></a>
+    {{/if}}
+    {{#if avatarHref }}
+      <a href="{{ toAboutHref avatarHref }}"><img src="{{ avatarHref }}" alt="Hiker avatar" class="icon rss"></a>
+    {{/if}}
     {{#if hikerId }}
-      <a href="{{ hikerHref }}"><img class='icon rss' src='/rss.svg' alt='rss icon'></a>
       <a href="//www.trailjournals.com/journal/about/{{ hikerId }}">
     {{/if}}
     {{#if signature }}

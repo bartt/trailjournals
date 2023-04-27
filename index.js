@@ -23,6 +23,9 @@ const handlebars = create({
   helpers: {
     isEven(value) {
       return value % 2 ? false : true
+    },
+    toAboutHref(href) {
+      return href.replace('thumbnail', 'about').replace('TN', '')
     }
   }
 })
