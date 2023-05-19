@@ -23,6 +23,9 @@ p, li {
 li {
   margin-bottom: 1rem;
 }
+header h2 {
+  font-style: italic;
+}
 header th {
   text-align: left;
 }
