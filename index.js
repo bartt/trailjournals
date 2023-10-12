@@ -9,10 +9,12 @@ import Parser from 'rss-parser';
 import { createHmac } from 'node:crypto';
 import { parse } from 'node-html-parser'
 import morgan from 'morgan';
+import { Command } from 'commander';
 
 const DIGEST_KEY = 'super secret'
 const app = express()
 const logger = debug('trailjournals');
+const commander = new Command();
 const fetchSettings = {
   headers: {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:97.0) Gecko/20100101 Firefox/97.0',
@@ -102,7 +104,7 @@ app.get('/entry', async (req, res) => {
       img.setAttribute('src', `//trailjournals.com${img.attrs.src}`)
     }
   }
-  
+
   const journalTitle = entry.querySelector('.journal-title') && entry.querySelector('.journal-title').text.replace(/(\d{4})/, "$1 ").trim()
   const entryTitle = entry.querySelector('.entry-title') && entry.querySelector('.entry-title').text.trim()
   const date = entry.querySelector('.entry-date').text.trim()
@@ -173,7 +175,7 @@ app.use(errorHandler)
 
 function normalizeId(id) {
   const matchData = id.match(/(\d+)$/)
-  return matchData.length > 0 ? matchData[0] : id
+  return matchData && matchData.length > 0 ? matchData[0] : id
 }
 
 function log(msg) {
@@ -182,4 +184,12 @@ function log(msg) {
   }
 }
 
-app.listen(9292, () => console.log("Server Listening on Port 9292"))
+commander
+  .option('-p, --port <value>', 'Port to listen on.', '9292')
+  .option('-h, --host <value>', 'Host IP address to listen on.', '0.0.0.0');
+
+commander.parse();
+
+const options = commander.opts();
+
+app.listen(options.port, options.host, () => console.log(`Server Listening on ${options.host}:${options.port}`))
