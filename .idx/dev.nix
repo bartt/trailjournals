@@ -34,4 +34,6 @@
       ];
     };
   };
+  
+  services.docker.enable = true;
 }

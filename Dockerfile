@@ -7,9 +7,9 @@ COPY views/ /trailjournals/views/
 COPY public/ /trailjournals/public/
 
 RUN cd /trailjournals && \
-  npm install --production
+  npm install -g npm@10.2.4 && \
+  npm install --omit dev --omit optional --omit peer  
 
-VOLUME /trailjournals
 WORKDIR /trailjournals
 
 EXPOSE 9292
