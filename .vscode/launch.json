@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "name": "Launch Chrome",
+            "request": "launch",
+            "type": "chrome",
+            "url": "http://localhost:9292/",
+            "webRoot": "${workspaceFolder}"
+        },
+    {
+        "command": "npm run dev",
+        "name": "Run npm dev",
+        "request": "launch",
+        "type": "node-terminal"
+    }
+    ]
+}
